@@ -4,6 +4,30 @@ import './index.css';
 import App from './components/App/App';
 import { AuthProvider } from './contexts/AuthContext';
 import reportWebVitals from './reportWebVitals';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import {Startpage} from "./components/Startpage/Startpage";
+import {Login} from "./components/Login/Login";
+
+const router = createBrowserRouter([
+  {
+      path: "/",
+      element: <App />,
+      errorElement: <App />,
+      children: [
+          {
+            path: "",
+            element: <Startpage />,
+          },
+          {
+              path: "login",
+              element: <Login />
+          }
+    ],
+  },
+]);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -11,7 +35,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
       <AuthProvider>
-          <App />
+          <RouterProvider router={router} />
       </AuthProvider>
   </React.StrictMode>
 );

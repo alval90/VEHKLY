@@ -1,5 +1,4 @@
 .Container {
     border-radius: 12px;
-    background-color: #F8F0F0;
-    opacity: .75;
+    background-color: rgba(248,240,240,0.75);
 }
