@@ -12,15 +12,16 @@
 h1 {
   font-size: 24px;
   font-weight: bold;
-  margin-top: 29px;
+  margin: 0px;
 }
 
 h2 {
   font-size: 20px;
   font-weight: bold;
-  margin-top: 24px;
+  margin: 0px;
 }
 
 p {
   font-size: 15px;
+  margin: 0px;
 }
