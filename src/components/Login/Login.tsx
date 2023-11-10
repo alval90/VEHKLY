@@ -54,7 +54,7 @@ export const Login: React.FC<{}> = () => {
       <p>
         Don't have an account yet? <Link to={`/register`}>Register</Link>
       </p>
-      <form onSubmit={handleSubmit}>
+      <form method={'post'} onSubmit={handleSubmit}>
         <Spacer size={Spacing.m} />
         <TextField
           required

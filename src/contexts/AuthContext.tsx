@@ -4,7 +4,7 @@ interface User {
   username: String;
   password: String;
 }
-interface AuthContextProps {
+export interface AuthContextProps {
   user: User | null;
   login: (userData: User) => void;
   logout: () => void;
@@ -31,6 +31,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
+export const useAuth = (): AuthContextProps => {
+  const test = useContext(AuthContext);
+  if (!test) {
+    throw new Error('Test');
+  }
+  return test;
 };

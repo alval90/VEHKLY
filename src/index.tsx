@@ -8,6 +8,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Startpage } from './components/Startpage/Startpage';
 import { Login } from './components/Login/Login';
 import { Register } from './components/Register/Register';
+import { Overview } from './components/Overview/Overview';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: 'register',
         element: <Register />
+      },
+      {
+        path: 'overview/:week',
+        element: <Overview />
       }
     ]
   }
