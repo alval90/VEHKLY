@@ -58,7 +58,7 @@ export const Register: React.FC<{}> = () => {
       <Spacer size={Spacing.m} />
       <h1>Register</h1>
       <Spacer size={Spacing.m} />
-      <form onSubmit={handleSubmit}>
+      <form method={'post'} onSubmit={handleSubmit}>
         <TextField
           required
           id="outlined-basic"

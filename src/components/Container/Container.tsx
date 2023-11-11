@@ -11,7 +11,15 @@ interface ContainerProps {
 }
 export const Container: React.FC<ContainerProps> = ({ children, size }) => {
   return (
-    <div className="Container" style={{ width: size }}>
+    <div
+      className="Container"
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        width: size
+      }}
+    >
       {children}
     </div>
   );

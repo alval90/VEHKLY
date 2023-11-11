@@ -1,0 +1,16 @@
+.ActionCard {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  justify-content: center;
+  height: 140px;
+  width: 140px;
+  background: #ffffff;
+  border: solid 1px rgba(119, 118, 118, 0.78);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.ActionCard p {
+  font-weight: 700;
+}
