@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContextProps, useAuth } from '../../contexts/AuthContext';
 import { Container, ContainerSize } from '../Container/Container';
@@ -12,11 +12,19 @@ export const Overview: React.FC<{}> = () => {
   const { week } = useParams();
   const navigate = useNavigate();
 
-  /*useEffect(() => {
-    if (!user) {
-      navigate("/login");
+  const [breakfast, setBreakfast] = useState<string[]>([]);
+  const [lunch, setLunch] = useState<string[]>([]);
+  const [dinner, setDinner] = useState<string[]>([]);
+
+  useEffect(() => {
+    for (let i = 0; i < 5; i++) {
+      let newArray = [...breakfast, "test"]
+      setBreakfast(newArray);
     }
-  })*/
+    /*if (!user) {
+      navigate("/login");
+    }*/
+  })
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     navigate(`/overview/${value}`);
@@ -24,6 +32,10 @@ export const Overview: React.FC<{}> = () => {
 
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   const dayLabelRow = days.map((day) => dayLabel({ day }));
+
+  const updateBreakfast = () => {
+    console.log("test");
+  }
 
   return (
     <Container size={ContainerSize.Big}>
@@ -60,10 +72,13 @@ export const Overview: React.FC<{}> = () => {
       >
         <MediaCard
           imageTitle={'test'}
-          imageDescription={'description'}
           imagePath={'bla'}
+          clickEvent={updateBreakfast}
         />
-        <ActionCard label={'+ Add meal'} href={'/test'} />
+        <ActionCard label={'+ Add meal'} href={'test'} />
+        <ActionCard label={'+ Add meal'} href={'test'} />
+        <ActionCard label={'+ Add meal'} href={'test'} />
+        <ActionCard label={'+ Add meal'} href={'test'} />
       </div>
       <div>{week}</div>
     </Container>

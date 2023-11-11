@@ -11,12 +11,12 @@ import React from 'react';
 interface MediaProps {
   imagePath: string;
   imageTitle: string;
-  imageDescription: string;
+  clickEvent: Function;
 }
 export const MediaCard: React.FC<MediaProps> = ({
   imagePath,
   imageTitle,
-  imageDescription
+  clickEvent,
 }) => {
   return (
     <Card sx={{ width: 140 }}>
@@ -26,7 +26,7 @@ export const MediaCard: React.FC<MediaProps> = ({
       </CardContent>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <CardActions>
-          <Button size="small">Remove</Button>
+          <Button onClick={() => clickEvent()} size="small">Remove</Button>
         </CardActions>
       </div>
     </Card>
