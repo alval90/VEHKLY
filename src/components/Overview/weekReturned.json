@@ -1,0 +1,28 @@
+[
+  {
+    "day": "Monday",
+    "breakfast": {
+      "title": "MondaymealBreakfast",
+      "description": "TestDescriptionMonday",
+      "imagePath": "/imagePageMonday",
+      "ingredients" : [
+        {
+          "title": "Ingredient1",
+          "amount": "amount1"
+        }
+      ]
+    },
+    "lunch": {
+      "title": "MondaymealLunch",
+      "description": "TestDescriptionMonday",
+      "imagePath": "/imagePageMonday",
+      "ingredients" : [
+        {
+          "title": "Ingredient1",
+          "amount": "amount1"
+        }
+      ]
+    },
+    "dinner": null
+  }
+]
