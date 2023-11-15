@@ -13,14 +13,14 @@ function useQuery() {
   return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-interface Meal {
+export interface Meal {
   title: string;
   description: string | null;
   imagePath: string | null;
   ingredients: Ingredient[];
 }
 
-interface Ingredient {
+export interface Ingredient {
   title: string;
   amount: string;
 }
