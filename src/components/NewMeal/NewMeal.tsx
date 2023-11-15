@@ -40,6 +40,7 @@ export const NewMeal: React.FC<{}> = () => {
     e.preventDefault();
     // TODO add POST logic
     console.log('submitted');
+    navigate(-1);
   };
 
   const handleTitleChange = (e: any) => {
@@ -147,7 +148,7 @@ export const NewMeal: React.FC<{}> = () => {
               <div>
                 <img
                   id="recipeImage"
-                  src={preview ? preview : defaultImage}
+                  src={preview ? preview : "https://dummyimage.com/600x400/8a8a8a/fff.jpg&text=Upload+Image"}
                   onClick={handleImageClick}
                 />
                 <input
