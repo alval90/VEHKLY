@@ -9,6 +9,7 @@ import { Startpage } from './components/Startpage/Startpage';
 import { Login } from './components/Login/Login';
 import { Register } from './components/Register/Register';
 import { Overview } from './components/Overview/Overview';
+import {AddMeal} from "./components/AddMeal/AddMeal";
 
 const router = createBrowserRouter([
   {
@@ -29,8 +30,12 @@ const router = createBrowserRouter([
         element: <Register />
       },
       {
-        path: 'overview/:week',
+        path: 'overview/:year/:week',
         element: <Overview />
+      },
+      {
+        path: 'overview/:year/:week/addmeal',
+        element: <AddMeal />
       }
     ]
   }

@@ -61,7 +61,7 @@ const getActionCard = (mealDay: MealDay, mealType: MealType) : JSX.Element => {
 
 export const Overview: React.FC<{}> = () => {
   const { user } = useAuth();
-  const { week } = useParams();
+  const { year, week } = useParams();
   const navigate = useNavigate();
 
   const [breakfast, setBreakfast] = useState<JSX.Element[]>([
@@ -86,9 +86,13 @@ export const Overview: React.FC<{}> = () => {
     <ActionCard label={'+ Add meal'} href={'addMeal?type=dinner&day=friday'} />,
   ]);
 
-  let mealPlan = require('./weekReturned.json');
+  let mealPlan = require('./MockData/weekReturned.json');
 
   useEffect(() => {
+    /*if (!user) {
+      navigate("/login");
+    }*/
+
     let breakfastUpdated = [...breakfast];
   let lunchUpdated = [...lunch];
   let dinnerUpdated = [...dinner];
@@ -103,11 +107,11 @@ export const Overview: React.FC<{}> = () => {
       }
       if (lunch !== null) {
         let {imagePath, title} = lunch;
-        lunch[mealIndex] = <MediaCard imagePath={imagePath} imageTitle={title} clickEvent={() => removeMeal(mealDay, MealType.lunch, mealIndex)} />;
+        lunchUpdated[mealIndex] = <MediaCard imagePath={imagePath} imageTitle={title} clickEvent={() => removeMeal(mealDay, MealType.lunch, mealIndex)} />;
       }
       if (dinner !== null) {
         let {imagePath, title} = dinner;
-        dinner[mealIndex] = <MediaCard imagePath={imagePath} imageTitle={title} clickEvent={() => removeMeal(mealDay, MealType.dinner, mealIndex)} />;
+        dinnerUpdated[mealIndex] = <MediaCard imagePath={imagePath} imageTitle={title} clickEvent={() => removeMeal(mealDay, MealType.dinner, mealIndex)} />;
       }
     }
 
@@ -115,14 +119,10 @@ export const Overview: React.FC<{}> = () => {
     setLunch(lunchUpdated);
     setDinner(dinnerUpdated);
 
-    /*if (!user) {
-      navigate("/login");
-    }*/
-
   }, [mealPlan])
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    navigate(`/overview/${value}`);
+    navigate(`/overview/${year}/${value}`);
   };
 
   const removeMeal = (mealDay: MealDay, mealType: MealType, mealIndex: number) => {
@@ -150,7 +150,8 @@ export const Overview: React.FC<{}> = () => {
   return (
     <Container size={ContainerSize.Big}>
       <Spacer size={Spacing.m} />
-      <h1>Week</h1>
+      <p>{year}</p>
+      <h1>MealWeek</h1>
       <Spacer size={Spacing.s} />
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Pagination
@@ -182,6 +183,7 @@ export const Overview: React.FC<{}> = () => {
       >
         {breakfast}
       </div>
+      <Spacer size={Spacing.s} />
       <div
         style={{
           display: 'flex',
@@ -192,6 +194,7 @@ export const Overview: React.FC<{}> = () => {
       >
         {lunch}
       </div>
+      <Spacer size={Spacing.s} />
       <div
         style={{
           display: 'flex',
@@ -202,7 +205,7 @@ export const Overview: React.FC<{}> = () => {
       >
         {dinner}
       </div>
-      <div>{week}</div>
+      <Spacer size={Spacing.m} />
     </Container>
   );
 };

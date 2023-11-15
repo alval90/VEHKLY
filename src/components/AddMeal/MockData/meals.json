@@ -1,0 +1,68 @@
+[
+  {
+    "title": "Mondaymeal Breakfast",
+    "description": "TestDescriptionMonday",
+    "imagePath": "",
+    "ingredients": [
+      {
+        "title": "Ingredient1",
+        "amount": "amount1"
+      }
+    ]
+  },
+  {
+    "title": "Curry",
+    "description": "TestDescriptionMonday",
+    "imagePath": "",
+    "ingredients": [
+      {
+        "title": "Ingredient1",
+        "amount": "amount1"
+      }
+    ]
+  },
+  {
+    "title": "Schnitzel",
+    "description": "TestDescriptionMonday",
+    "imagePath": "",
+    "ingredients": [
+      {
+        "title": "Ingredient1",
+        "amount": "amount1"
+      }
+    ]
+  },
+  {
+    "title": "MondaymealBreakfast",
+    "description": "TestDescriptionMonday",
+    "imagePath": "",
+    "ingredients": [
+      {
+        "title": "Ingredient1",
+        "amount": "amount1"
+      }
+    ]
+  },
+  {
+    "title": "Curry",
+    "description": "TestDescriptionMonday",
+    "imagePath": "",
+    "ingredients": [
+      {
+        "title": "Ingredient1",
+        "amount": "amount1"
+      }
+    ]
+  },
+  {
+    "title": "Schnitzel",
+    "description": "TestDescriptionMonday",
+    "imagePath": "",
+    "ingredients": [
+      {
+        "title": "Ingredient1",
+        "amount": "amount1"
+      }
+    ]
+  }
+]

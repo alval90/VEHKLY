@@ -10,14 +10,18 @@ interface ContainerProps {
   size: ContainerSize;
 }
 export const Container: React.FC<ContainerProps> = ({ children, size }) => {
+  let minHeight = "230px";
+  if (size === ContainerSize.Big) {
+    minHeight = "700px";
+  }
   return (
     <div
       className="Container"
       style={{
         display: 'flex',
-        justifyContent: 'center',
         flexDirection: 'column',
-        width: size
+        width: size,
+        minHeight: minHeight
       }}
     >
       {children}
