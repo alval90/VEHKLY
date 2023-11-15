@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContextProps, useAuth } from '../../contexts/AuthContext';
 import { Container, ContainerSize } from '../Container/Container';
@@ -21,7 +21,7 @@ enum MealType {
   dinner
 }
 
-const getMealIndex = (mealDay : MealDay) : number => {
+const getMealIndex = (mealDay: MealDay): number => {
   switch (mealDay) {
     case MealDay.Monday:
       return 0;
@@ -36,28 +36,33 @@ const getMealIndex = (mealDay : MealDay) : number => {
     default:
       return -1;
   }
-}
+};
 
-const getMealDay = (day: string) : MealDay => {
+const getMealDay = (day: string): MealDay => {
   switch (day) {
-    case "monday":
+    case 'monday':
       return MealDay.Monday;
-    case "tuesday":
+    case 'tuesday':
       return MealDay.Tuesday;
-    case "wednesday":
+    case 'wednesday':
       return MealDay.Wednesday;
-    case "thursday":
+    case 'thursday':
       return MealDay.Thursday;
-    case "friday":
+    case 'friday':
       return MealDay.Friday;
     default:
       return MealDay.Monday;
   }
-}
+};
 
-const getActionCard = (mealDay: MealDay, mealType: MealType) : JSX.Element => {
-  return <ActionCard label={'+ Add meal'} href={`addMeal?type=${mealType}&day=${mealDay}`} />;
-}
+const getActionCard = (mealDay: MealDay, mealType: MealType): JSX.Element => {
+  return (
+    <ActionCard
+      label={'+ Add meal'}
+      href={`addMeal?type=${mealType}&day=${mealDay}`}
+    />
+  );
+};
 
 export const Overview: React.FC<{}> = () => {
   const { user } = useAuth();
@@ -65,25 +70,55 @@ export const Overview: React.FC<{}> = () => {
   const navigate = useNavigate();
 
   const [breakfast, setBreakfast] = useState<JSX.Element[]>([
-    <ActionCard label={'+ Add meal'} href={'addMeal?type=breakfast&day=monday'} />,
-    <ActionCard label={'+ Add meal'} href={'addMeal?type=breakfast&day=tuesday'} />,
-    <ActionCard label={'+ Add meal'} href={'addMeal?type=breakfast&day=wednesday'} />,
-    <ActionCard label={'+ Add meal'} href={'addMeal?type=breakfast&day=thursday'} />,
-    <ActionCard label={'+ Add meal'} href={'addMeal?type=breakfast&day=friday'} />,
+    <ActionCard
+      label={'+ Add meal'}
+      href={'addMeal?type=breakfast&day=monday'}
+    />,
+    <ActionCard
+      label={'+ Add meal'}
+      href={'addMeal?type=breakfast&day=tuesday'}
+    />,
+    <ActionCard
+      label={'+ Add meal'}
+      href={'addMeal?type=breakfast&day=wednesday'}
+    />,
+    <ActionCard
+      label={'+ Add meal'}
+      href={'addMeal?type=breakfast&day=thursday'}
+    />,
+    <ActionCard
+      label={'+ Add meal'}
+      href={'addMeal?type=breakfast&day=friday'}
+    />
   ]);
   const [lunch, setLunch] = useState<JSX.Element[]>([
     <ActionCard label={'+ Add meal'} href={'addMeal?type=lunch&day=monday'} />,
     <ActionCard label={'+ Add meal'} href={'addMeal?type=lunch&day=tuesday'} />,
-    <ActionCard label={'+ Add meal'} href={'addMeal?type=lunch&day=wednesday'} />,
-    <ActionCard label={'+ Add meal'} href={'addMeal?type=lunch&day=thursday'} />,
-    <ActionCard label={'+ Add meal'} href={'addMeal?type=lunch&day=friday'} />,
+    <ActionCard
+      label={'+ Add meal'}
+      href={'addMeal?type=lunch&day=wednesday'}
+    />,
+    <ActionCard
+      label={'+ Add meal'}
+      href={'addMeal?type=lunch&day=thursday'}
+    />,
+    <ActionCard label={'+ Add meal'} href={'addMeal?type=lunch&day=friday'} />
   ]);
   const [dinner, setDinner] = useState<JSX.Element[]>([
     <ActionCard label={'+ Add meal'} href={'addMeal?type=dinner&day=monday'} />,
-    <ActionCard label={'+ Add meal'} href={'addMeal?type=dinner&day=tuesday'} />,
-    <ActionCard label={'+ Add meal'} href={'addMeal?type=dinner&day=wednesday'} />,
-    <ActionCard label={'+ Add meal'} href={'addMeal?type=dinner&day=thursday'} />,
-    <ActionCard label={'+ Add meal'} href={'addMeal?type=dinner&day=friday'} />,
+    <ActionCard
+      label={'+ Add meal'}
+      href={'addMeal?type=dinner&day=tuesday'}
+    />,
+    <ActionCard
+      label={'+ Add meal'}
+      href={'addMeal?type=dinner&day=wednesday'}
+    />,
+    <ActionCard
+      label={'+ Add meal'}
+      href={'addMeal?type=dinner&day=thursday'}
+    />,
+    <ActionCard label={'+ Add meal'} href={'addMeal?type=dinner&day=friday'} />
   ]);
 
   let mealPlan = require('./MockData/weekReturned.json');
@@ -94,38 +129,61 @@ export const Overview: React.FC<{}> = () => {
     }*/
 
     let breakfastUpdated = [...breakfast];
-  let lunchUpdated = [...lunch];
-  let dinnerUpdated = [...dinner];
+    let lunchUpdated = [...lunch];
+    let dinnerUpdated = [...dinner];
 
     for (let meal of mealPlan) {
-      let mealDay : MealDay = getMealDay(meal.day);
+      let mealDay: MealDay = getMealDay(meal.day);
       let mealIndex = getMealIndex(mealDay);
-      let {breakfast, lunch, dinner} = meal;
+      let { breakfast, lunch, dinner } = meal;
       if (breakfast !== null) {
-        let {imagePath, title} = breakfast;
-        breakfastUpdated[mealIndex] = <MediaCard imagePath={imagePath} imageTitle={title} clickEvent={() => removeMeal(mealDay, MealType.breakfast, mealIndex)} />;
+        let { imagePath, title } = breakfast;
+        breakfastUpdated[mealIndex] = (
+          <MediaCard
+            imagePath={imagePath}
+            imageTitle={title}
+            clickEvent={() =>
+              removeMeal(mealDay, MealType.breakfast, mealIndex)
+            }
+          />
+        );
       }
       if (lunch !== null) {
-        let {imagePath, title} = lunch;
-        lunchUpdated[mealIndex] = <MediaCard imagePath={imagePath} imageTitle={title} clickEvent={() => removeMeal(mealDay, MealType.lunch, mealIndex)} />;
+        let { imagePath, title } = lunch;
+        lunchUpdated[mealIndex] = (
+          <MediaCard
+            imagePath={imagePath}
+            imageTitle={title}
+            clickEvent={() => removeMeal(mealDay, MealType.lunch, mealIndex)}
+          />
+        );
       }
       if (dinner !== null) {
-        let {imagePath, title} = dinner;
-        dinnerUpdated[mealIndex] = <MediaCard imagePath={imagePath} imageTitle={title} clickEvent={() => removeMeal(mealDay, MealType.dinner, mealIndex)} />;
+        let { imagePath, title } = dinner;
+        dinnerUpdated[mealIndex] = (
+          <MediaCard
+            imagePath={imagePath}
+            imageTitle={title}
+            clickEvent={() => removeMeal(mealDay, MealType.dinner, mealIndex)}
+          />
+        );
       }
     }
 
     setBreakfast(breakfastUpdated);
     setLunch(lunchUpdated);
     setDinner(dinnerUpdated);
-
-  }, [mealPlan])
+  }, [mealPlan]);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     navigate(`/overview/${year}/${value}`);
   };
 
-  const removeMeal = (mealDay: MealDay, mealType: MealType, mealIndex: number) => {
+  const removeMeal = (
+    mealDay: MealDay,
+    mealType: MealType,
+    mealIndex: number
+  ) => {
     switch (mealType) {
       case MealType.breakfast:
         let updateBreakfast = [...breakfast];
@@ -143,7 +201,7 @@ export const Overview: React.FC<{}> = () => {
         setDinner(updatedDinner);
         break;
     }
-  }
+  };
 
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   const dayLabelRow = days.map((day) => dayLabel({ day }));

@@ -5,7 +5,7 @@
       "title": "MondaymealBreakfast",
       "description": "TestDescriptionMonday",
       "imagePath": "/imagePageMonday",
-      "ingredients" : [
+      "ingredients": [
         {
           "title": "Ingredient1",
           "amount": "amount1"
@@ -16,7 +16,7 @@
       "title": "MondaymealLunch",
       "description": "TestDescriptionMonday",
       "imagePath": "",
-      "ingredients" : [
+      "ingredients": [
         {
           "title": "Ingredient1",
           "amount": "amount1"
