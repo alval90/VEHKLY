@@ -5,9 +5,10 @@ import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 interface MealMenuProps {
+  viewClickEvent : () => void;
   deleteClickEvents : () => {};
 }
-export let MealMenu : React.FC<MealMenuProps> = ({deleteClickEvents}) => {
+export let MealMenu : React.FC<MealMenuProps> = ({viewClickEvent, deleteClickEvents}) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -20,6 +21,11 @@ export let MealMenu : React.FC<MealMenuProps> = ({deleteClickEvents}) => {
 
   const handleDelete = () => {
     deleteClickEvents();
+    handleClose();
+  }
+
+  const handleView = () => {
+    viewClickEvent();
     handleClose();
   }
 
@@ -46,8 +52,7 @@ export let MealMenu : React.FC<MealMenuProps> = ({deleteClickEvents}) => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}>View</MenuItem>
-        <MenuItem onClick={handleClose}>Edit</MenuItem>
+        <MenuItem onClick={handleView}>View</MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
     </div>

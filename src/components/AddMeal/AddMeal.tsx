@@ -6,12 +6,7 @@ import { Spacer, Spacing } from '../Spacer/Spacer';
 import { ActionCard } from '../ActionCard/ActionCard';
 import { MediaCard } from '../MediaCard/MediaCard';
 import { TextField } from '@mui/material';
-
-function useQuery() {
-  const { search } = useLocation();
-
-  return React.useMemo(() => new URLSearchParams(search), [search]);
-}
+import {useQuery} from "../../utils/hooks";
 
 export interface Meal {
   title: string;

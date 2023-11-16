@@ -126,9 +126,7 @@ export const MealPlan: React.FC<{}> = () => {
   let mealPlan = require('./MockData/weekReturned.json');
 
   useEffect(() => {
-    /*if (!user) {
-      navigate("/login");
-    }*/
+    // TODO: get meal plan from db
 
     let breakfastUpdated = [...breakfast];
     let lunchUpdated = [...lunch];
