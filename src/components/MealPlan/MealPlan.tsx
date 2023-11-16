@@ -66,7 +66,7 @@ const getActionCard = (mealDay: MealDay, mealType: MealType): JSX.Element => {
   );
 };
 
-export const Overview: React.FC<{}> = () => {
+export const MealPlan: React.FC<{}> = () => {
   const { user } = useAuth();
   const { year, week } = useParams();
   const navigate = useNavigate();
@@ -178,7 +178,7 @@ export const Overview: React.FC<{}> = () => {
   }, [mealPlan]);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    navigate(`/overview/${year}/${value}`);
+    navigate(`/mealplan/${year}/${value}`);
   };
 
   const removeMeal = (
@@ -216,7 +216,7 @@ export const Overview: React.FC<{}> = () => {
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Pagination
           count={52}
-          defaultPage={Number(week)}
+          page={Number(week)}
           onChange={handleChange}
           color={'primary'}
           shape="rounded"

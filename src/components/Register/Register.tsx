@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { Container, ContainerSize } from '../Container/Container';
+import React, {useState} from 'react';
+import {Container, ContainerSize} from '../Container/Container';
 import Button from '@mui/material/Button';
-import { Spacer, Spacing } from '../Spacer/Spacer';
-import { TextField } from '@mui/material';
+import {Spacer, Spacing} from '../Spacer/Spacer';
+import {TextField} from '@mui/material';
+import {useNavigate} from "react-router-dom";
+import {getCurrentWeekMealPlanURL} from "../../utils/dateUtils";
 
 export const Register: React.FC<{}> = () => {
   const [email, setEmail] = useState('');
@@ -11,21 +13,20 @@ export const Register: React.FC<{}> = () => {
   const [passwordError, setPasswordError] = useState(false);
   const [repPassword, setRepPassword] = useState('');
 
+  const navigate = useNavigate();
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
     // TODO error handling being managed by material ui. No error on submit or when invalid value
-    if (email === '' || !email.includes('@')) {
-      setEmailError(true);
-      return;
-    }
-    if (password === '' || repPassword === '' || password !== repPassword) {
+    if (password !== repPassword) {
       setPasswordError(true);
       return;
     }
     if (email && password) {
       // TODO Login
-      console.log(email, password);
+
+      navigate(getCurrentWeekMealPlanURL());
     }
   };
 

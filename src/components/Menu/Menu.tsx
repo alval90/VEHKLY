@@ -39,7 +39,7 @@ export default function YearMenu() {
     if (e.target.selected) {
       return;
     }
-    navigate(`/overview/${year}/1`);
+    navigate(`/mealplan/${year}/1`);
     handleClose();
   };
 

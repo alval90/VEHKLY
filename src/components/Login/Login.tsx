@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 import { Container, ContainerSize } from '../Container/Container';
 import Button from '@mui/material/Button';
 import { Spacer, Spacing } from '../Spacer/Spacer';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { TextField } from '@mui/material';
+import {getCurrentWeekMealPlanURL} from "../../utils/dateUtils";
 
 export const Login: React.FC<{}> = () => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(false);
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -27,6 +30,8 @@ export const Login: React.FC<{}> = () => {
     }
     if (email && password) {
       // TODO Login
+
+      navigate(getCurrentWeekMealPlanURL());
       console.log(email, password);
     }
   };

@@ -8,7 +8,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Startpage } from './components/Startpage/Startpage';
 import { Login } from './components/Login/Login';
 import { Register } from './components/Register/Register';
-import { Overview } from './components/Overview/Overview';
+import { MealPlan } from './components/MealPlan/MealPlan';
 import { AddMeal } from './components/AddMeal/AddMeal';
 import { NewMeal } from './components/NewMeal/NewMeal';
 
@@ -31,11 +31,11 @@ const router = createBrowserRouter([
         element: <Register />
       },
       {
-        path: 'overview/:year/:week',
-        element: <Overview />
+        path: 'mealplan/:year/:week',
+        element: <MealPlan />
       },
       {
-        path: 'overview/:year/:week/addmeal',
+        path: 'mealplan/:year/:week/addmeal',
         element: <AddMeal />
       },
       {
