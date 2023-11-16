@@ -54,6 +54,13 @@ export const AddMeal: React.FC<{}> = () => {
     navigate(-1);
   };
 
+  const deleteMeal = (mealTitle: string) => {
+    // TODO: delete meal to db
+
+    let updatedMeals = meals?.filter((meal) => meal.title !== mealTitle);
+    setMeals(updatedMeals);
+  }
+
   const mealCards = meals
     ?.filter((meal) =>
       meal.title.toLowerCase().includes(searchInput.toLowerCase())
@@ -64,6 +71,7 @@ export const AddMeal: React.FC<{}> = () => {
         imageTitle={meal.title}
         actionLabel={'Add'}
         clickEvent={() => addMeal(meal.title)}
+        deleteClickEvent={() => deleteMeal(meal.title)}
       />
     ));
 

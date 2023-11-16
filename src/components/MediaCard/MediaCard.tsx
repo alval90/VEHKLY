@@ -7,13 +7,16 @@ import {
 } from '@mui/material';
 import defaultImage from '../../images/defaultImage.jpg';
 import Button from '@mui/material/Button';
+import {MealMenu} from '../Menu/MealMenu';
 import React from 'react';
+import {useNavigation} from "react-router-dom";
 
 interface MediaProps {
   imagePath: string | null;
   imageTitle: string;
   actionLabel?: string;
   clickEvent: Function;
+  deleteClickEvent?: Function;
 }
 
 function truncateString(str: string) {
@@ -24,16 +27,25 @@ export const MediaCard: React.FC<MediaProps> = ({
   imagePath,
   imageTitle,
   actionLabel = 'Remove',
-  clickEvent
+  clickEvent,
+  deleteClickEvent = () => {},
 }) => {
   let imageTitleTruncated = truncateString(imageTitle);
+  let navigation = useNavigation();
+  let isManagementCard = actionLabel === 'Add';
+
   return (
-    <Card sx={{ width: 140, height: 140 }}>
+    <Card sx={{ width: 140, height: 140, position:"relative" }}>
       <CardMedia
         sx={{ height: 80 }}
         image={imagePath ? imagePath : defaultImage}
         title={imageTitle}
       />
+      {isManagementCard && (<div style={{position: 'absolute',
+      top: '5px',
+      right: '5px'}}>
+        <MealMenu deleteClickEvents={() => deleteClickEvent()} />
+      </div>)}
       <CardContent
         style={{
           padding: '0px',

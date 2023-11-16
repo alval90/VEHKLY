@@ -6,8 +6,8 @@ import { Spacer, Spacing } from '../Spacer/Spacer';
 import { Pagination } from '@mui/material';
 import { MediaCard } from '../MediaCard/MediaCard';
 import { ActionCard } from '../ActionCard/ActionCard';
-import Menu from '../Menu/Menu';
-import YearMenu from '../Menu/Menu';
+import Menu from '../Menu/YearMenu';
+import YearMenu from '../Menu/YearMenu';
 
 enum MealDay {
   Monday,
