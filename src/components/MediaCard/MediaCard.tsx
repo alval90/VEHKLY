@@ -7,9 +7,9 @@ import {
 } from '@mui/material';
 import defaultImage from '../../images/defaultImage.jpg';
 import Button from '@mui/material/Button';
-import {MealMenu} from '../Menu/MealMenu';
+import { MealMenu } from '../Menu/MealMenu';
 import React from 'react';
-import {useNavigate, useNavigation} from "react-router-dom";
+import { useNavigate, useNavigation } from 'react-router-dom';
 
 interface MediaProps {
   imagePath: string | null;
@@ -28,7 +28,7 @@ export const MediaCard: React.FC<MediaProps> = ({
   imageTitle,
   actionLabel = 'Remove',
   clickEvent,
-  deleteClickEvent = () => {},
+  deleteClickEvent = () => {}
 }) => {
   let imageTitleTruncated = truncateString(imageTitle);
   let navigate = useNavigate();
@@ -36,20 +36,23 @@ export const MediaCard: React.FC<MediaProps> = ({
 
   const handleViewClickEvent = () => {
     navigate(`/mealview?meal=${imageTitle}`);
-  }
+  };
 
   return (
-    <Card sx={{ width: 140, height: 140, position:"relative" }}>
+    <Card sx={{ width: 140, height: 140, position: 'relative' }}>
       <CardMedia
         sx={{ height: 80 }}
         image={imagePath ? imagePath : defaultImage}
         title={imageTitle}
       />
-      {isManagementCard && (<div style={{position: 'absolute',
-      top: '5px',
-      right: '5px'}}>
-        <MealMenu viewClickEvent={() => handleViewClickEvent()} deleteClickEvents={() => deleteClickEvent()} />
-      </div>)}
+      {isManagementCard && (
+        <div style={{ position: 'absolute', top: '5px', right: '5px' }}>
+          <MealMenu
+            viewClickEvent={() => handleViewClickEvent()}
+            deleteClickEvents={() => deleteClickEvent()}
+          />
+        </div>
+      )}
       <CardContent
         style={{
           padding: '0px',

@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-import {Container, ContainerSize} from '../Container/Container';
+import React, { useState } from 'react';
+import { Container, ContainerSize } from '../Container/Container';
 import Button from '@mui/material/Button';
-import {Spacer, Spacing} from '../Spacer/Spacer';
-import {TextField} from '@mui/material';
-import {useNavigate} from "react-router-dom";
-import {getCurrentWeekMealPlanURL} from "../../utils/dateUtils";
+import { Spacer, Spacing } from '../Spacer/Spacer';
+import { TextField } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { getCurrentWeekMealPlanURL } from '../../utils/dateUtils';
 
 export const Register: React.FC<{}> = () => {
   const [email, setEmail] = useState('');

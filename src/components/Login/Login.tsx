@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Container, ContainerSize } from '../Container/Container';
 import Button from '@mui/material/Button';
 import { Spacer, Spacing } from '../Spacer/Spacer';
-import {Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { TextField } from '@mui/material';
-import {getCurrentWeekMealPlanURL} from "../../utils/dateUtils";
+import { getCurrentWeekMealPlanURL } from '../../utils/dateUtils';
 
 export const Login: React.FC<{}> = () => {
   const [email, setEmail] = useState('');

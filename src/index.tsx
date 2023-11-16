@@ -11,7 +11,7 @@ import { Register } from './components/Register/Register';
 import { MealPlan } from './components/MealPlan/MealPlan';
 import { AddMeal } from './components/AddMeal/AddMeal';
 import { NewMeal } from './components/NewMeal/NewMeal';
-import {MealDetailView} from "./components/MealDetailView/MealDetailView";
+import { MealDetailView } from './components/MealDetailView/MealDetailView';
 
 const router = createBrowserRouter([
   {

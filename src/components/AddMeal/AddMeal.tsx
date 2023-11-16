@@ -6,7 +6,7 @@ import { Spacer, Spacing } from '../Spacer/Spacer';
 import { ActionCard } from '../ActionCard/ActionCard';
 import { MediaCard } from '../MediaCard/MediaCard';
 import { TextField } from '@mui/material';
-import {useQuery} from "../../utils/hooks";
+import { useQuery } from '../../utils/hooks';
 
 export interface Meal {
   title: string;
@@ -54,7 +54,7 @@ export const AddMeal: React.FC<{}> = () => {
 
     let updatedMeals = meals?.filter((meal) => meal.title !== mealTitle);
     setMeals(updatedMeals);
-  }
+  };
 
   const mealCards = meals
     ?.filter((meal) =>
