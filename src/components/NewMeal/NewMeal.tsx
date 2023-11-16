@@ -148,7 +148,11 @@ export const NewMeal: React.FC<{}> = () => {
               <div>
                 <img
                   id="recipeImage"
-                  src={preview ? preview : "https://dummyimage.com/600x400/8a8a8a/fff.jpg&text=Upload+Image"}
+                  src={
+                    preview
+                      ? preview
+                      : 'https://dummyimage.com/600x400/8a8a8a/fff.jpg&text=Upload+Image'
+                  }
                   onClick={handleImageClick}
                 />
                 <input

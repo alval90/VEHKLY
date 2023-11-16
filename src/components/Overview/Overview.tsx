@@ -6,6 +6,8 @@ import { Spacer, Spacing } from '../Spacer/Spacer';
 import { Pagination } from '@mui/material';
 import { MediaCard } from '../MediaCard/MediaCard';
 import { ActionCard } from '../ActionCard/ActionCard';
+import Menu from '../Menu/Menu';
+import YearMenu from '../Menu/Menu';
 
 enum MealDay {
   Monday,
@@ -208,7 +210,7 @@ export const Overview: React.FC<{}> = () => {
   return (
     <Container size={ContainerSize.Big}>
       <Spacer size={Spacing.m} />
-      <p>{year}</p>
+      <YearMenu />
       <h1>MealWeek</h1>
       <Spacer size={Spacing.s} />
       <div style={{ display: 'flex', justifyContent: 'center' }}>
