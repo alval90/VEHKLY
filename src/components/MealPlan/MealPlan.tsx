@@ -8,6 +8,7 @@ import { MediaCard } from '../MediaCard/MediaCard';
 import { ActionCard } from '../ActionCard/ActionCard';
 import Menu from '../Menu/YearMenu';
 import YearMenu from '../Menu/YearMenu';
+import Button from "@mui/material/Button";
 
 enum MealDay {
   Monday,
@@ -67,7 +68,7 @@ const getActionCard = (mealDay: MealDay, mealType: MealType): JSX.Element => {
 };
 
 export const MealPlan: React.FC<{}> = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { year, week } = useParams();
   const navigate = useNavigate();
 
@@ -263,7 +264,13 @@ export const MealPlan: React.FC<{}> = () => {
       >
         {dinner}
       </div>
-      <Spacer size={Spacing.m} />
+      <Spacer size={Spacing.xl} />
+      <Button onClick={() => navigate(`/list?year=${year}&month=${week}`)} style={{alignSelf: "center", width: "140px"}} variant="contained">
+          Create List
+      </Button>
+      <Spacer size={Spacing.xs} />
+      <p style={{cursor:"pointer"}} onClick={() => logout()}>Logout</p>
+      <Spacer size={Spacing.s} />
     </Container>
   );
 };

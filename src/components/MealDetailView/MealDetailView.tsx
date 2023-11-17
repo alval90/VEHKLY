@@ -48,10 +48,10 @@ export const MealDetailView = () => {
   );
 };
 
-interface MealViewProp {
+export interface MealViewProp {
   meal: Meal;
 }
-const MealView: React.FC<MealViewProp> = ({ meal }) => {
+export const MealView: React.FC<MealViewProp> = ({ meal }) => {
   let ingredients = meal.ingredients.map((ingredient: Ingredient) => (
     <li>
       {ingredient.title}: {ingredient.amount}

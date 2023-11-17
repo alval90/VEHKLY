@@ -12,6 +12,7 @@ import { MealPlan } from './components/MealPlan/MealPlan';
 import { AddMeal } from './components/AddMeal/AddMeal';
 import { NewMeal } from './components/NewMeal/NewMeal';
 import { MealDetailView } from './components/MealDetailView/MealDetailView';
+import {MealList} from "./components/MealList/MealList";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: 'mealview',
         element: <MealDetailView />
+      },
+      {
+        path: 'list',
+        element: <MealList />
       }
     ]
   }
