@@ -8,9 +8,9 @@ import { MediaCard } from '../MediaCard/MediaCard';
 import { ActionCard } from '../ActionCard/ActionCard';
 import Menu from '../Menu/YearMenu';
 import YearMenu from '../Menu/YearMenu';
-import Button from "@mui/material/Button";
+import Button from '@mui/material/Button';
 
-enum MealDay {
+export enum MealDay {
   Monday,
   Tuesday,
   Wednesday,
@@ -18,13 +18,13 @@ enum MealDay {
   Friday
 }
 
-enum MealType {
+export enum MealType {
   breakfast,
   lunch,
   dinner
 }
 
-const getMealIndex = (mealDay: MealDay): number => {
+export const getMealIndex = (mealDay: MealDay): number => {
   switch (mealDay) {
     case MealDay.Monday:
       return 0;
@@ -41,7 +41,7 @@ const getMealIndex = (mealDay: MealDay): number => {
   }
 };
 
-const getMealDay = (day: string): MealDay => {
+export const getMealDay = (day: string): MealDay => {
   switch (day) {
     case 'monday':
       return MealDay.Monday;
@@ -265,11 +265,17 @@ export const MealPlan: React.FC<{}> = () => {
         {dinner}
       </div>
       <Spacer size={Spacing.xl} />
-      <Button onClick={() => navigate(`/list?year=${year}&month=${week}`)} style={{alignSelf: "center", width: "140px"}} variant="contained">
-          Create List
+      <Button
+        onClick={() => navigate(`/list?year=${year}&month=${week}`)}
+        style={{ alignSelf: 'center', width: '140px' }}
+        variant="contained"
+      >
+        Create List
       </Button>
       <Spacer size={Spacing.xs} />
-      <p style={{cursor:"pointer"}} onClick={() => logout()}>Logout</p>
+      <p style={{ cursor: 'pointer' }} onClick={() => logout()}>
+        Logout
+      </p>
       <Spacer size={Spacing.s} />
     </Container>
   );

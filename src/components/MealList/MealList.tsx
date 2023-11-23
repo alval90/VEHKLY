@@ -3,10 +3,16 @@ import { Container, ContainerSize } from '../Container/Container';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '../../utils/hooks';
 import { Spacer, Spacing } from '../Spacer/Spacer';
-import {MealView} from "../MealDetailView/MealDetailView";
+import { MealView } from '../MealDetailView/MealDetailView';
+import { Meal } from '../AddMeal/AddMeal';
+import { BackButton } from '../BackButton/BackButton';
 
 export const MealList = () => {
-  let [meal, setMeal] = useState();
+  let [mondayMeals, setMondayMeals] = useState<Meal[]>();
+  let [tuesdayMeals, setTuesdayMeals] = useState<Meal[]>();
+  let [wednesdayMeals, setWednesdayMeals] = useState<Meal[]>();
+  let [thursdayMeals, setThursdayMeals] = useState<Meal[]>();
+  let [fridayMeals, setFridayMeals] = useState<Meal[]>();
 
   let navigate = useNavigate();
   let query = useQuery();
@@ -19,29 +25,80 @@ export const MealList = () => {
 
     // TODO: fetch meal info
 
-    //setMeal(weekReturnedMock);
+    for (let meal of weekReturnedMock) {
+      let { breakfast, lunch, dinner } = meal;
+      let mealsUpdated = [breakfast, lunch, dinner].filter(
+        (meal) => meal !== null
+      );
+      switch (meal.day) {
+        case 'Monday':
+          setMondayMeals(mealsUpdated);
+          break;
+        case 'Tuesday':
+          setTuesdayMeals(mealsUpdated);
+          break;
+        case 'Wednesday':
+          setWednesdayMeals(mealsUpdated);
+          break;
+        case 'Thursday':
+          setThursdayMeals(mealsUpdated);
+          break;
+        case 'Friday':
+          setFridayMeals(mealsUpdated);
+          break;
+      }
+    }
   });
 
-  const handleClick = (e: any) => {
-    navigate(-1);
-  };
+  let mondayList = mondayMeals?.map((meal) => <MealView meal={meal} />);
+  let tuesdayList = tuesdayMeals?.map((meal) => <MealView meal={meal} />);
+  let wednesdayList = wednesdayMeals?.map((meal) => <MealView meal={meal} />);
+  let thursdayList = thursdayMeals?.map((meal) => <MealView meal={meal} />);
+  let fridayList = fridayMeals?.map((meal) => <MealView meal={meal} />);
 
   return (
-    <Container size={ContainerSize.Small}>
+    <Container size={ContainerSize.Big}>
       <Spacer size={Spacing.m} />
-      <p
-        onClick={handleClick}
-        style={{
-          paddingLeft: '20px',
-          alignSelf: 'baseline',
-          color: 'blue',
-          cursor: 'pointer',
-          fontWeight: 700
-        }}
-      >
-        ← back
-      </p>
-      {meal && <MealView meal={meal} />}
+      <BackButton />
+      {mondayList && (
+        <div>
+          <h1 style={{ fontSize: 30 }}>Monday</h1>
+          <Spacer size={Spacing.l} />
+          {mondayList}
+        </div>
+      )}
+      {tuesdayList && (
+        <div>
+          <Spacer size={Spacing.xl} />
+          <h1 style={{ fontSize: 30 }}>Tuesday</h1>
+          <Spacer size={Spacing.l} />
+          {tuesdayList}
+        </div>
+      )}
+      {wednesdayList && (
+        <div>
+          <Spacer size={Spacing.xl} />
+          <h1 style={{ fontSize: 30 }}>Wednesday</h1>
+          <Spacer size={Spacing.l} />
+          {wednesdayList}
+        </div>
+      )}
+      {thursdayList && (
+        <div>
+          <Spacer size={Spacing.xl} />
+          <h1 style={{ fontSize: 30 }}>Thursday</h1>
+          <Spacer size={Spacing.l} />
+          {thursdayList}
+        </div>
+      )}
+      {fridayList && (
+        <div>
+          <Spacer size={Spacing.xl} />
+          <h1 style={{ fontSize: 30 }}>Friday</h1>
+          <Spacer size={Spacing.l} />
+          {fridayList}
+        </div>
+      )}
       <Spacer size={Spacing.m} />
     </Container>
   );

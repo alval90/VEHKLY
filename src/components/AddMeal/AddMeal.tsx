@@ -7,6 +7,7 @@ import { ActionCard } from '../ActionCard/ActionCard';
 import { MediaCard } from '../MediaCard/MediaCard';
 import { TextField } from '@mui/material';
 import { useQuery } from '../../utils/hooks';
+import { BackButton } from '../BackButton/BackButton';
 
 export interface Meal {
   title: string;
@@ -73,6 +74,7 @@ export const AddMeal: React.FC<{}> = () => {
   return (
     <Container size={ContainerSize.Big}>
       <Spacer size={Spacing.m} />
+      <BackButton />
       <h1>Meals</h1>
       <Spacer size={Spacing.s} />
       <div>

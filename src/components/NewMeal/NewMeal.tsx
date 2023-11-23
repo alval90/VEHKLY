@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { Container, ContainerSize } from '../Container/Container';
 import { Spacer, Spacing } from '../Spacer/Spacer';
 import './NewMeal.css';
-import defaultImage from '../../images/defaultImage.jpg';
 import Button from '@mui/material/Button';
 import { TextField } from '@mui/material';
 import { Ingredient } from '../AddMeal/AddMeal';
+import { BackButton } from '../BackButton/BackButton';
 
 export const NewMeal: React.FC<{}> = () => {
   const [recipeImage, setRecipeImage] = useState<File>();
@@ -124,6 +124,7 @@ export const NewMeal: React.FC<{}> = () => {
   return (
     <Container size={ContainerSize.Big}>
       <Spacer size={Spacing.m} />
+      <BackButton />
       <h1>New Meal</h1>
       <Spacer size={Spacing.s} />
       <div
