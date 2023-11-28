@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AuthContextProps, useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { Container, ContainerSize } from '../Container/Container';
 import { Spacer, Spacing } from '../Spacer/Spacer';
 import { Pagination } from '@mui/material';
 import { MediaCard } from '../MediaCard/MediaCard';
 import { ActionCard } from '../ActionCard/ActionCard';
-import Menu from '../Menu/YearMenu';
 import YearMenu from '../Menu/YearMenu';
 import Button from '@mui/material/Button';
+
+import mealPlan from './MockData/weekReturned.json';
 
 export enum MealDay {
   Monday,
@@ -67,7 +68,7 @@ const getActionCard = (mealDay: MealDay, mealType: MealType): JSX.Element => {
   );
 };
 
-export const MealPlan: React.FC<{}> = () => {
+export const MealPlan: React.FC = () => {
   const { user, logout } = useAuth();
   const { year, week } = useParams();
   const navigate = useNavigate();
@@ -123,9 +124,6 @@ export const MealPlan: React.FC<{}> = () => {
     />,
     <ActionCard label={'+ Add meal'} href={'addMeal?type=dinner&day=friday'} />
   ]);
-
-  let mealPlan = require('./MockData/weekReturned.json');
-
   useEffect(() => {
     // TODO: get meal plan from db
 
@@ -282,7 +280,7 @@ export const MealPlan: React.FC<{}> = () => {
 };
 
 interface DayProps {
-  day: String;
+  day: string;
 }
 const dayLabel: React.FC<DayProps> = ({ day }) => {
   return (

@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
-import Cookies from "universal-cookie";
-import {Http2ServerResponse} from "http2";
+import Cookies from 'universal-cookie';
+import { Http2ServerResponse } from 'http2';
 interface User {
   username: String;
   password: String;
@@ -21,45 +21,48 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const cookies = new Cookies();
 
-  const isResponseOk = (response : any) => {
+  const isResponseOk = (response: any) => {
     if (response.status >= 200 && response.status <= 299) {
       return response.json();
     } else {
       throw Error(response.statusText);
     }
-  }
+  };
 
   const login = (userData: User) => {
-    fetch("/api/login/", {
-      method: "POST",
+    fetch('/api/login/', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": cookies.get("csrftoken"),
+        'Content-Type': 'application/json',
+        'X-CSRFToken': cookies.get('csrftoken')
       },
-      credentials: "same-origin",
-      body: JSON.stringify({username: userData.username, password: userData.password})
+      credentials: 'same-origin',
+      body: JSON.stringify({
+        username: userData.username,
+        password: userData.password
+      })
     })
-      .then(res => isResponseOk(res))
+      .then((res) => isResponseOk(res))
       .then((data) => {
         console.log(data);
       })
       .catch((err) => {
         console.log(err);
-      })
+      });
   };
 
   const logout = () => {
-    fetch("/api/logout", {
-      credentials: "same-origin",
+    fetch('/api/logout', {
+      credentials: 'same-origin'
     })
-      .then(res => isResponseOk(res))
+      .then((res) => isResponseOk(res))
       .then((data) => {
         console.log(data);
       })
       .catch((err) => {
         console.log(err);
-      })
-  }
+      });
+  };
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

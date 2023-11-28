@@ -6,14 +6,13 @@ import { Ingredient, Meal } from '../AddMeal/AddMeal';
 import { Spacer, Spacing } from '../Spacer/Spacer';
 import defaultImage from '../../images/defaultImage.jpg';
 
+import mealMock from './MockData/meal.json';
+
 export const MealDetailView = () => {
   let [meal, setMeal] = useState<Meal>();
 
   let navigate = useNavigate();
   let query = useQuery();
-
-  let mealMock = require('./MockData/meal.json');
-
   useEffect(() => {
     let mealTitle = query.get('meal');
     console.log(mealTitle);

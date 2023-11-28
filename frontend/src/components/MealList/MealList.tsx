@@ -7,6 +7,8 @@ import { MealView } from '../MealDetailView/MealDetailView';
 import { Meal } from '../AddMeal/AddMeal';
 import { BackButton } from '../BackButton/BackButton';
 
+import weekReturnedMock from './MockData/weekReturned.json';
+
 export const MealList = () => {
   let [mondayMeals, setMondayMeals] = useState<Meal[]>();
   let [tuesdayMeals, setTuesdayMeals] = useState<Meal[]>();
@@ -16,9 +18,6 @@ export const MealList = () => {
 
   let navigate = useNavigate();
   let query = useQuery();
-
-  let weekReturnedMock = require('./MockData/weekReturned.json');
-
   useEffect(() => {
     let year = query.get('year');
     let month = query.get('month');

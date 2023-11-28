@@ -9,6 +9,8 @@ import { TextField } from '@mui/material';
 import { useQuery } from '../../utils/hooks';
 import { BackButton } from '../BackButton/BackButton';
 
+import mockMeals from './MockData/meals.json';
+
 export interface Meal {
   title: string;
   description: string | null;
@@ -29,9 +31,6 @@ export const AddMeal: React.FC<{}> = () => {
   const { year, week } = useParams();
   const query = useQuery();
   const navigate = useNavigate();
-
-  let mockMeals = require('./MockData/meals.json');
-
   useEffect(() => {
     /*if (!user) {
       navigate("/login");

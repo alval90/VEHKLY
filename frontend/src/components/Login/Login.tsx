@@ -5,7 +5,7 @@ import { Spacer, Spacing } from '../Spacer/Spacer';
 import { Link, useNavigate } from 'react-router-dom';
 import { TextField } from '@mui/material';
 import { getCurrentWeekMealPlanURL } from '../../utils/dateUtils';
-import {useAuth} from "../../contexts/AuthContext";
+import { useAuth } from '../../contexts/AuthContext';
 
 export const Login: React.FC<{}> = () => {
   const [email, setEmail] = useState('');
@@ -15,7 +15,6 @@ export const Login: React.FC<{}> = () => {
 
   const navigate = useNavigate();
   const authContext = useAuth();
-
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -32,7 +31,7 @@ export const Login: React.FC<{}> = () => {
       return;
     }
     if (email && password) {
-      authContext.login({username: email, password: password});
+      authContext.login({ username: email, password: password });
       // TODO Login
 
       //navigate(getCurrentWeekMealPlanURL());
