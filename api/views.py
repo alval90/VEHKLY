@@ -1,5 +1,6 @@
 import json
 
+from django import forms
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -7,6 +8,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 
+from api import models
 
 @require_POST
 def login_view(request):
@@ -58,4 +60,20 @@ def session_view(request):
 
     return JsonResponse({'isAuthenticated': True})
 
-# Create your views here.
+class IngredientForm(forms.ModelForm):
+    class Meta:
+        model = models.Ingredient
+        exclude = []
+
+class RecipeForm(forms.ModelForm):
+    class Meta:
+        model = models.Recipe
+        exclude = []
+
+@require_POST
+def upload_ingredient(request):
+    request.POST
+@require_POST
+def upload_recipe(request):
+
+
