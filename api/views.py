@@ -7,8 +7,12 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
-
+from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser, JSONParser
+from rest_framework.response import Response
+from rest_framework import status
 from api import models
+from .serializers import IngredientSerializer, RecipeSerializer, MealPlanSerializer
 
 @require_POST
 def login_view(request):
@@ -60,20 +64,58 @@ def session_view(request):
 
     return JsonResponse({'isAuthenticated': True})
 
-class IngredientForm(forms.ModelForm):
-    class Meta:
-        model = models.Ingredient
-        exclude = []
+class IngredientView(APIView):
+    parser_classes = (JSONParser,)
 
-class RecipeForm(forms.ModelForm):
-    class Meta:
-        model = models.Recipe
-        exclude = []
+    def post(self, request, *args, **kwargs):
+        serializer = IngredientSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@require_POST
-def upload_ingredient(request):
-    request.POST
-@require_POST
-def upload_recipe(request):
+class RecipeViewDetailed(APIView):
+    parser_classes = (MultiPartParser,)
 
+    def get(self, request, name):
+        recipe = models.Recipe.objects.filter(user=request.user, name=name)
+        serializer = RecipeSerializer(recipe, many=True)
+        return Response(serializer.data)
+
+class RecipeView(APIView):
+    parser_classes = (MultiPartParser,)
+
+    def get(self, request):
+        recipe = models.Recipe.objects.filter(user=request.user)
+        serializer = RecipeSerializer(recipe, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        request.data['user'] = request.user.id
+
+        serializer = RecipeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class MealPlanView(APIView):
+    parser_classes = (JSONParser,)
+
+    def get(self, request, year, week):
+        recipe = models.MealPlan.objects.filter(user=request.user, year=year, week=week)
+        serializer = MealPlanSerializer(recipe, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, year, week):
+        request.data['user'] = request.user.id
+
+        serializer = MealPlanSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
