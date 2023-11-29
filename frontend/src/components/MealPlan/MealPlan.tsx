@@ -1,28 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import { Container, ContainerSize } from '../Container/Container';
-import { Spacer, Spacing } from '../Spacer/Spacer';
-import { Pagination } from '@mui/material';
-import { MediaCard } from '../MediaCard/MediaCard';
-import { ActionCard } from '../ActionCard/ActionCard';
-import YearMenu from '../Menu/YearMenu';
-import Button from '@mui/material/Button';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
+import { Container, ContainerSize } from "../Container/Container";
+import { Spacer, Spacing } from "../Spacer/Spacer";
+import { Pagination } from "@mui/material";
+import { MediaCard } from "../MediaCard/MediaCard";
+import { ActionCard } from "../ActionCard/ActionCard";
+import YearMenu from "../Menu/YearMenu";
+import Button from "@mui/material/Button";
 
-import mealPlan from './MockData/weekReturned.json';
+import mealPlan from "./MockData/weekReturned.json";
 
 export enum MealDay {
   Monday,
   Tuesday,
   Wednesday,
   Thursday,
-  Friday
+  Friday,
 }
 
 export enum MealType {
   breakfast,
   lunch,
-  dinner
+  dinner,
 }
 
 export const getMealIndex = (mealDay: MealDay): number => {
@@ -44,15 +44,15 @@ export const getMealIndex = (mealDay: MealDay): number => {
 
 export const getMealDay = (day: string): MealDay => {
   switch (day) {
-    case 'monday':
+    case "monday":
       return MealDay.Monday;
-    case 'tuesday':
+    case "tuesday":
       return MealDay.Tuesday;
-    case 'wednesday':
+    case "wednesday":
       return MealDay.Wednesday;
-    case 'thursday':
+    case "thursday":
       return MealDay.Thursday;
-    case 'friday':
+    case "friday":
       return MealDay.Friday;
     default:
       return MealDay.Monday;
@@ -62,7 +62,7 @@ export const getMealDay = (day: string): MealDay => {
 const getActionCard = (mealDay: MealDay, mealType: MealType): JSX.Element => {
   return (
     <ActionCard
-      label={'+ Add meal'}
+      label={"+ Add meal"}
       href={`addMeal?type=${mealType}&day=${mealDay}`}
     />
   );
@@ -75,54 +75,54 @@ export const MealPlan: React.FC = () => {
 
   const [breakfast, setBreakfast] = useState<JSX.Element[]>([
     <ActionCard
-      label={'+ Add meal'}
-      href={'addMeal?type=breakfast&day=monday'}
+      label={"+ Add meal"}
+      href={"addMeal?type=breakfast&day=monday"}
     />,
     <ActionCard
-      label={'+ Add meal'}
-      href={'addMeal?type=breakfast&day=tuesday'}
+      label={"+ Add meal"}
+      href={"addMeal?type=breakfast&day=tuesday"}
     />,
     <ActionCard
-      label={'+ Add meal'}
-      href={'addMeal?type=breakfast&day=wednesday'}
+      label={"+ Add meal"}
+      href={"addMeal?type=breakfast&day=wednesday"}
     />,
     <ActionCard
-      label={'+ Add meal'}
-      href={'addMeal?type=breakfast&day=thursday'}
+      label={"+ Add meal"}
+      href={"addMeal?type=breakfast&day=thursday"}
     />,
     <ActionCard
-      label={'+ Add meal'}
-      href={'addMeal?type=breakfast&day=friday'}
-    />
+      label={"+ Add meal"}
+      href={"addMeal?type=breakfast&day=friday"}
+    />,
   ]);
   const [lunch, setLunch] = useState<JSX.Element[]>([
-    <ActionCard label={'+ Add meal'} href={'addMeal?type=lunch&day=monday'} />,
-    <ActionCard label={'+ Add meal'} href={'addMeal?type=lunch&day=tuesday'} />,
+    <ActionCard label={"+ Add meal"} href={"addMeal?type=lunch&day=monday"} />,
+    <ActionCard label={"+ Add meal"} href={"addMeal?type=lunch&day=tuesday"} />,
     <ActionCard
-      label={'+ Add meal'}
-      href={'addMeal?type=lunch&day=wednesday'}
+      label={"+ Add meal"}
+      href={"addMeal?type=lunch&day=wednesday"}
     />,
     <ActionCard
-      label={'+ Add meal'}
-      href={'addMeal?type=lunch&day=thursday'}
+      label={"+ Add meal"}
+      href={"addMeal?type=lunch&day=thursday"}
     />,
-    <ActionCard label={'+ Add meal'} href={'addMeal?type=lunch&day=friday'} />
+    <ActionCard label={"+ Add meal"} href={"addMeal?type=lunch&day=friday"} />,
   ]);
   const [dinner, setDinner] = useState<JSX.Element[]>([
-    <ActionCard label={'+ Add meal'} href={'addMeal?type=dinner&day=monday'} />,
+    <ActionCard label={"+ Add meal"} href={"addMeal?type=dinner&day=monday"} />,
     <ActionCard
-      label={'+ Add meal'}
-      href={'addMeal?type=dinner&day=tuesday'}
+      label={"+ Add meal"}
+      href={"addMeal?type=dinner&day=tuesday"}
     />,
     <ActionCard
-      label={'+ Add meal'}
-      href={'addMeal?type=dinner&day=wednesday'}
+      label={"+ Add meal"}
+      href={"addMeal?type=dinner&day=wednesday"}
     />,
     <ActionCard
-      label={'+ Add meal'}
-      href={'addMeal?type=dinner&day=thursday'}
+      label={"+ Add meal"}
+      href={"addMeal?type=dinner&day=thursday"}
     />,
-    <ActionCard label={'+ Add meal'} href={'addMeal?type=dinner&day=friday'} />
+    <ActionCard label={"+ Add meal"} href={"addMeal?type=dinner&day=friday"} />,
   ]);
   useEffect(() => {
     // TODO: get meal plan from db
@@ -181,7 +181,7 @@ export const MealPlan: React.FC = () => {
   const removeMeal = (
     mealDay: MealDay,
     mealType: MealType,
-    mealIndex: number
+    mealIndex: number,
   ) => {
     switch (mealType) {
       case MealType.breakfast:
@@ -202,7 +202,7 @@ export const MealPlan: React.FC = () => {
     }
   };
 
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   const dayLabelRow = days.map((day) => dayLabel({ day }));
   return (
     <Container size={ContainerSize.Big}>
@@ -210,32 +210,32 @@ export const MealPlan: React.FC = () => {
       <YearMenu />
       <h1>MealWeek</h1>
       <Spacer size={Spacing.s} />
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={{ display: "flex", justifyContent: "center" }}>
         <Pagination
           count={52}
           page={Number(week)}
           onChange={handleChange}
-          color={'primary'}
+          color={"primary"}
           shape="rounded"
         />
       </div>
       <Spacer size={Spacing.m} />
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          width: '95%',
-          alignSelf: 'center'
+          display: "flex",
+          justifyContent: "space-between",
+          width: "95%",
+          alignSelf: "center",
         }}
       >
         {dayLabelRow}
       </div>
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          width: '95%',
-          alignSelf: 'center'
+          display: "flex",
+          justifyContent: "space-between",
+          width: "95%",
+          alignSelf: "center",
         }}
       >
         {breakfast}
@@ -243,10 +243,10 @@ export const MealPlan: React.FC = () => {
       <Spacer size={Spacing.s} />
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          width: '95%',
-          alignSelf: 'center'
+          display: "flex",
+          justifyContent: "space-between",
+          width: "95%",
+          alignSelf: "center",
         }}
       >
         {lunch}
@@ -254,10 +254,10 @@ export const MealPlan: React.FC = () => {
       <Spacer size={Spacing.s} />
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          width: '95%',
-          alignSelf: 'center'
+          display: "flex",
+          justifyContent: "space-between",
+          width: "95%",
+          alignSelf: "center",
         }}
       >
         {dinner}
@@ -265,13 +265,13 @@ export const MealPlan: React.FC = () => {
       <Spacer size={Spacing.xl} />
       <Button
         onClick={() => navigate(`/list?year=${year}&month=${week}`)}
-        style={{ alignSelf: 'center', width: '140px' }}
+        style={{ alignSelf: "center", width: "140px" }}
         variant="contained"
       >
         Create List
       </Button>
       <Spacer size={Spacing.xs} />
-      <p style={{ cursor: 'pointer' }} onClick={() => logout()}>
+      <p style={{ cursor: "pointer" }} onClick={() => logout()}>
         Logout
       </p>
       <Spacer size={Spacing.s} />
@@ -286,11 +286,11 @@ const dayLabel: React.FC<DayProps> = ({ day }) => {
   return (
     <div
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        width: '140px',
-        height: '40px'
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        width: "140px",
+        height: "40px",
       }}
     >
       {day}

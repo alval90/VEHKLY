@@ -1,6 +1,6 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import './ActionCard.css';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "./ActionCard.css";
 
 interface ActionCardProps {
   label: string;
@@ -12,7 +12,7 @@ export const ActionCard: React.FC<ActionCardProps> = ({ label, href }) => {
     navigate(href);
   };
   return (
-    <div onClick={handleClick} className={'ActionCard'}>
+    <div onClick={handleClick} className={"ActionCard"}>
       <p>{label}</p>
     </div>
   );

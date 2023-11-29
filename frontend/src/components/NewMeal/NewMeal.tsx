@@ -1,12 +1,12 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Container, ContainerSize } from '../Container/Container';
-import { Spacer, Spacing } from '../Spacer/Spacer';
-import './NewMeal.css';
-import Button from '@mui/material/Button';
-import { TextField } from '@mui/material';
-import { Ingredient } from '../AddMeal/AddMeal';
-import { BackButton } from '../BackButton/BackButton';
+import React, { ChangeEvent, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Container, ContainerSize } from "../Container/Container";
+import { Spacer, Spacing } from "../Spacer/Spacer";
+import "./NewMeal.css";
+import Button from "@mui/material/Button";
+import { TextField } from "@mui/material";
+import { Ingredient } from "../AddMeal/AddMeal";
+import { BackButton } from "../BackButton/BackButton";
 
 export const NewMeal: React.FC<{}> = () => {
   const [recipeImage, setRecipeImage] = useState<File>();
@@ -15,9 +15,9 @@ export const NewMeal: React.FC<{}> = () => {
   const [recipeDescription, setRecipeDescription] = useState<string>();
   const [ingredients, setIngredients] = useState<Ingredient[]>([
     {
-      title: '',
-      amount: ''
-    }
+      title: "",
+      amount: "",
+    },
   ]);
 
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ export const NewMeal: React.FC<{}> = () => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     // TODO add POST logic
-    console.log('submitted');
+    console.log("submitted");
     navigate(-1);
   };
 
@@ -70,9 +70,9 @@ export const NewMeal: React.FC<{}> = () => {
       <Spacer size={Spacing.s} />
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'space-around',
-          alignItems: 'center'
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
         }}
       >
         <TextField
@@ -92,13 +92,13 @@ export const NewMeal: React.FC<{}> = () => {
           variant="filled"
         />
         {index === 0 && (
-          <p style={{ color: 'lightgrey', fontWeight: 700, cursor: 'default' }}>
+          <p style={{ color: "lightgrey", fontWeight: 700, cursor: "default" }}>
             Remove
           </p>
         )}
         {index !== 0 && (
           <p
-            style={{ color: 'red', fontWeight: 700, cursor: 'pointer' }}
+            style={{ color: "red", fontWeight: 700, cursor: "pointer" }}
             onClick={() => handleRemoveIngredientClick(index)}
           >
             Remove
@@ -117,7 +117,7 @@ export const NewMeal: React.FC<{}> = () => {
 
   const handleIngredientClick = (e: any) => {
     let ingredientsUpdated = [...ingredients];
-    ingredientsUpdated.push({ title: '', amount: '' });
+    ingredientsUpdated.push({ title: "", amount: "" });
     setIngredients(ingredientsUpdated);
   };
 
@@ -129,21 +129,21 @@ export const NewMeal: React.FC<{}> = () => {
       <Spacer size={Spacing.s} />
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column'
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
         }}
       >
-        <form method={'post'} onSubmit={handleSubmit}>
-          <div className={'RecipeFormPart'}>
+        <form method={"post"} onSubmit={handleSubmit}>
+          <div className={"RecipeFormPart"}>
             <h2>General</h2>
             <Spacer size={Spacing.s} />
             <div
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-around'
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-around",
               }}
             >
               <div>
@@ -152,13 +152,13 @@ export const NewMeal: React.FC<{}> = () => {
                   src={
                     preview
                       ? preview
-                      : 'https://dummyimage.com/600x400/8a8a8a/fff.jpg&text=Upload+Image'
+                      : "https://dummyimage.com/600x400/8a8a8a/fff.jpg&text=Upload+Image"
                   }
                   onClick={handleImageClick}
                 />
                 <input
                   type="file"
-                  style={{ display: 'none' }}
+                  style={{ display: "none" }}
                   ref={fileRef}
                   onChange={handleImageChange}
                 />
@@ -174,19 +174,19 @@ export const NewMeal: React.FC<{}> = () => {
             </div>
           </div>
           <Spacer size={Spacing.s} />
-          <div className={'RecipeFormPart'}>
+          <div className={"RecipeFormPart"}>
             <h2>Ingredients</h2>
             <Spacer size={Spacing.s} />
             {ingredientInput}
             <p
-              style={{ fontWeight: 700, cursor: 'pointer' }}
+              style={{ fontWeight: 700, cursor: "pointer" }}
               onClick={handleIngredientClick}
             >
               + Add ingredient
             </p>
           </div>
           <Spacer size={Spacing.s} />
-          <div className={'RecipeFormPart'}>
+          <div className={"RecipeFormPart"}>
             <h2>Recipe</h2>
             <Spacer size={Spacing.s} />
             <TextField
@@ -196,7 +196,7 @@ export const NewMeal: React.FC<{}> = () => {
               rows={4}
               variant="filled"
               onChange={handleRecipeDescriptionChange}
-              style={{ width: '100%' }}
+              style={{ width: "100%" }}
             />
           </div>
           <Spacer size={Spacing.s} />

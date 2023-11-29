@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Container, ContainerSize } from '../Container/Container';
-import { useNavigate } from 'react-router-dom';
-import { useQuery } from '../../utils/hooks';
-import { Spacer, Spacing } from '../Spacer/Spacer';
-import { MealView } from '../MealDetailView/MealDetailView';
-import { Meal } from '../AddMeal/AddMeal';
-import { BackButton } from '../BackButton/BackButton';
+import React, { useEffect, useState } from "react";
+import { Container, ContainerSize } from "../Container/Container";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "../../utils/hooks";
+import { Spacer, Spacing } from "../Spacer/Spacer";
+import { MealView } from "../MealDetailView/MealDetailView";
+import { Meal } from "../AddMeal/AddMeal";
+import { BackButton } from "../BackButton/BackButton";
 
-import weekReturnedMock from './MockData/weekReturned.json';
+import weekReturnedMock from "./MockData/weekReturned.json";
 
 export const MealList = () => {
   let [mondayMeals, setMondayMeals] = useState<Meal[]>();
@@ -19,30 +19,30 @@ export const MealList = () => {
   let navigate = useNavigate();
   let query = useQuery();
   useEffect(() => {
-    let year = query.get('year');
-    let month = query.get('month');
+    let year = query.get("year");
+    let month = query.get("month");
 
     // TODO: fetch meal info
 
     for (let meal of weekReturnedMock) {
       let { breakfast, lunch, dinner } = meal;
       let mealsUpdated = [breakfast, lunch, dinner].filter(
-        (meal) => meal !== null
+        (meal) => meal !== null,
       );
       switch (meal.day) {
-        case 'Monday':
+        case "Monday":
           setMondayMeals(mealsUpdated);
           break;
-        case 'Tuesday':
+        case "Tuesday":
           setTuesdayMeals(mealsUpdated);
           break;
-        case 'Wednesday':
+        case "Wednesday":
           setWednesdayMeals(mealsUpdated);
           break;
-        case 'Thursday':
+        case "Thursday":
           setThursdayMeals(mealsUpdated);
           break;
-        case 'Friday':
+        case "Friday":
           setFridayMeals(mealsUpdated);
           break;
       }

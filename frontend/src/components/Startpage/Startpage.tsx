@@ -1,8 +1,8 @@
-import React from 'react';
-import { Container, ContainerSize } from '../Container/Container.tsx';
-import { Spacer, Spacing } from '../Spacer/Spacer.tsx';
-import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Container, ContainerSize } from "../Container/Container.tsx";
+import { Spacer, Spacing } from "../Spacer/Spacer.tsx";
+import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
 
 export const Startpage: React.FC = () => {
   return (

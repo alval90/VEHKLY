@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Container, ContainerSize } from '../Container/Container';
-import { useAuth } from '../../contexts/AuthContext';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Spacer, Spacing } from '../Spacer/Spacer';
-import { ActionCard } from '../ActionCard/ActionCard';
-import { MediaCard } from '../MediaCard/MediaCard';
-import { TextField } from '@mui/material';
-import { useQuery } from '../../utils/hooks';
-import { BackButton } from '../BackButton/BackButton';
+import React, { useEffect, useState } from "react";
+import { Container, ContainerSize } from "../Container/Container";
+import { useAuth } from "../../contexts/AuthContext";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Spacer, Spacing } from "../Spacer/Spacer";
+import { ActionCard } from "../ActionCard/ActionCard";
+import { MediaCard } from "../MediaCard/MediaCard";
+import { TextField } from "@mui/material";
+import { useQuery } from "../../utils/hooks";
+import { BackButton } from "../BackButton/BackButton";
 
-import mockMeals from './MockData/meals.json';
+import mockMeals from "./MockData/meals.json";
 
 export interface Meal {
   title: string;
@@ -25,7 +25,7 @@ export interface Ingredient {
 
 export const AddMeal: React.FC<{}> = () => {
   let [meals, setMeals] = useState<Meal[]>();
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState("");
 
   const { user } = useAuth();
   const { year, week } = useParams();
@@ -58,13 +58,13 @@ export const AddMeal: React.FC<{}> = () => {
 
   const mealCards = meals
     ?.filter((meal) =>
-      meal.title.toLowerCase().includes(searchInput.toLowerCase())
+      meal.title.toLowerCase().includes(searchInput.toLowerCase()),
     )
     .map((meal) => (
       <MediaCard
         imagePath={meal.imagePath}
         imageTitle={meal.title}
-        actionLabel={'Add'}
+        actionLabel={"Add"}
         clickEvent={() => addMeal(meal.title)}
         deleteClickEvent={() => deleteMeal(meal.title)}
       />
@@ -83,19 +83,19 @@ export const AddMeal: React.FC<{}> = () => {
           onChange={handleSearchChange}
           value={searchInput}
           variant="filled"
-          style={{ width: '300px' }}
+          style={{ width: "300px" }}
         />
       </div>
       <Spacer size={Spacing.m} />
       <div
         style={{
-          display: 'grid',
-          gridGap: '30px',
-          gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
-          marginLeft: '38px'
+          display: "grid",
+          gridGap: "30px",
+          gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+          marginLeft: "38px",
         }}
       >
-        <ActionCard label={'+ New meal'} href={'/newmeal'} />
+        <ActionCard label={"+ New meal"} href={"/newmeal"} />
         {mealCards}
       </div>
       <Spacer size={Spacing.m} />

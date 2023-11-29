@@ -1,8 +1,8 @@
-import * as React from 'react';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { useNavigate, useParams } from 'react-router-dom';
+import * as React from "react";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ITEM_HEIGHT = 48;
 
@@ -47,31 +47,31 @@ export default function YearMenu() {
     <div>
       <p
         onClick={handleClick}
-        style={{ color: 'blue', fontWeight: 700, cursor: 'pointer' }}
+        style={{ color: "blue", fontWeight: 700, cursor: "pointer" }}
       >
         {year}
       </p>
       <Menu
         id="long-menu"
         MenuListProps={{
-          'aria-labelledby': 'long-button'
+          "aria-labelledby": "long-button",
         }}
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center'
+          vertical: "top",
+          horizontal: "center",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center'
+          vertical: "top",
+          horizontal: "center",
         }}
         PaperProps={{
           style: {
             maxHeight: ITEM_HEIGHT * 4.5,
-            width: '20ch'
-          }
+            width: "20ch",
+          },
         }}
       >
         {options.map((option) => (

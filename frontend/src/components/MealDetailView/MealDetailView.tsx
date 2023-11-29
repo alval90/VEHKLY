@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Container, ContainerSize } from '../Container/Container';
-import { useNavigate } from 'react-router-dom';
-import { useQuery } from '../../utils/hooks';
-import { Ingredient, Meal } from '../AddMeal/AddMeal';
-import { Spacer, Spacing } from '../Spacer/Spacer';
-import defaultImage from '../../images/defaultImage.jpg';
+import React, { useEffect, useState } from "react";
+import { Container, ContainerSize } from "../Container/Container";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "../../utils/hooks";
+import { Ingredient, Meal } from "../AddMeal/AddMeal";
+import { Spacer, Spacing } from "../Spacer/Spacer";
+import defaultImage from "../../images/defaultImage.jpg";
 
-import mealMock from './MockData/meal.json';
+import mealMock from "./MockData/meal.json";
 
 export const MealDetailView = () => {
   let [meal, setMeal] = useState<Meal>();
@@ -14,7 +14,7 @@ export const MealDetailView = () => {
   let navigate = useNavigate();
   let query = useQuery();
   useEffect(() => {
-    let mealTitle = query.get('meal');
+    let mealTitle = query.get("meal");
     console.log(mealTitle);
 
     // TODO: fetch meal info
@@ -32,11 +32,11 @@ export const MealDetailView = () => {
       <p
         onClick={handleClick}
         style={{
-          paddingLeft: '20px',
-          alignSelf: 'baseline',
-          color: 'blue',
-          cursor: 'pointer',
-          fontWeight: 700
+          paddingLeft: "20px",
+          alignSelf: "baseline",
+          color: "blue",
+          cursor: "pointer",
+          fontWeight: 700,
         }}
       >
         ← back
@@ -60,15 +60,15 @@ export const MealView: React.FC<MealViewProp> = ({ meal }) => {
   return (
     <div
       style={{
-        textAlign: 'left',
-        padding: '20px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
+        textAlign: "left",
+        padding: "20px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
       }}
     >
       <img
-        style={{ height: '140px', width: '140px', borderRadius: '12px' }}
+        style={{ height: "140px", width: "140px", borderRadius: "12px" }}
         src={meal.imagePath ? meal.imagePath : defaultImage}
       />
       <Spacer size={Spacing.xs} />
@@ -80,14 +80,14 @@ export const MealView: React.FC<MealViewProp> = ({ meal }) => {
       {meal.description && (
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           <h2>Recipe</h2>
           <Spacer size={Spacing.xs} />
-          <p style={{ fontSize: '14px', textAlign: 'justify' }}>
+          <p style={{ fontSize: "14px", textAlign: "justify" }}>
             {meal.description}
           </p>
         </div>

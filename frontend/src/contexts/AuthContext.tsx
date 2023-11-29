@@ -1,14 +1,19 @@
-import React, { createContext, ReactNode, useContext, useState } from 'react';
-import Cookies from 'universal-cookie';
-import { Http2ServerResponse } from 'http2';
+import React, { createContext, ReactNode, useContext, useState } from "react";
+import Cookies from "universal-cookie";
 interface User {
-  username: String;
-  password: String;
+  username: string;
+  password: string;
 }
 export interface AuthContextProps {
-  user: User | null;
-  login: (userData: User) => void;
-  logout: () => void;
+  username: string | null;
+  register: (userData: User) => Promise<globalThis.Response>;
+  login: (userData: User) => Promise<globalThis.Response>;
+  logout: () => Promise<globalThis.Response>;
+}
+
+export enum HttpStatusCode {
+  OK = 200,
+  CONFLICT = 409,
 }
 
 interface AuthProviderProps {
@@ -17,55 +22,61 @@ interface AuthProviderProps {
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
 
   const cookies = new Cookies();
 
-  const isResponseOk = (response: any) => {
-    if (response.status >= 200 && response.status <= 299) {
-      return response.json();
-    } else {
-      throw Error(response.statusText);
-    }
-  };
-
-  const login = (userData: User) => {
-    fetch('/api/login/', {
-      method: 'POST',
+  const login = async (userData: User): Promise<globalThis.Response> => {
+    return await fetch("/api/login/", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': cookies.get('csrftoken')
+        "Content-Type": "application/json",
+        "X-CSRFToken": cookies.get("csrftoken"),
       },
-      credentials: 'same-origin',
+      credentials: "same-origin",
       body: JSON.stringify({
         username: userData.username,
-        password: userData.password
-      })
+        password: userData.password,
+      }),
     })
-      .then((res) => isResponseOk(res))
-      .then((data) => {
-        console.log(data);
+      .then((res: globalThis.Response) => {
+        if (res.status == HttpStatusCode.OK) {
+          setUsername(userData.username);
+        }
+        return res;
       })
       .catch((err) => {
-        console.log(err);
+        console.log("in auth context");
       });
   };
 
-  const logout = () => {
-    fetch('/api/logout', {
-      credentials: 'same-origin'
-    })
-      .then((res) => isResponseOk(res))
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const logout = async (): Promise<globalThis.Response> => {
+    return await fetch("/api/logout/", {
+      credentials: "same-origin",
+    }).then((res) => {
+      return res;
+    });
+  };
+
+  const register = async (userData: User): Promise<globalThis.Response> => {
+    return await fetch("/api/register/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": cookies.get("csrftoken"),
+      },
+      credentials: "same-origin",
+      body: JSON.stringify({
+        username: userData.username,
+        password: userData.password,
+      }),
+    }).then((res) => {
+      return res;
+    });
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ username, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );
@@ -74,7 +85,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 export const useAuth = (): AuthContextProps => {
   const test = useContext(AuthContext);
   if (!test) {
-    throw new Error('Test');
+    throw new Error("Test");
   }
   return test;
 };

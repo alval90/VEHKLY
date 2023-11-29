@@ -1,47 +1,47 @@
-import React, { useState } from 'react';
-import { Container, ContainerSize } from '../Container/Container';
-import Button from '@mui/material/Button';
-import { Spacer, Spacing } from '../Spacer/Spacer';
-import { Link, useNavigate } from 'react-router-dom';
-import { TextField } from '@mui/material';
-import { getCurrentWeekMealPlanURL } from '../../utils/dateUtils';
-import { useAuth } from '../../contexts/AuthContext';
+import React, { useState } from "react";
+import { Container, ContainerSize } from "../Container/Container";
+import Button from "@mui/material/Button";
+import { Spacer, Spacing } from "../Spacer/Spacer";
+import { Link, useNavigate } from "react-router-dom";
+import { TextField } from "@mui/material";
+import { getCurrentWeekMealPlanURL } from "../../utils/dateUtils";
+import { HttpStatusCode, useAuth } from "../../contexts/AuthContext";
 
 export const Login: React.FC<{}> = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState(false);
+  const [helperText, setHelperText] = useState("");
 
   const navigate = useNavigate();
   const authContext = useAuth();
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: Event) => {
     e.preventDefault();
 
-    // TODO error handling being managed by material ui. No error on submit or when invalid value
-    if (email === '' || !email.includes('@')) {
-      setEmailError(true);
-    }
-    if (password === '') {
-      setPasswordError(true);
-    }
-
-    if (emailError || passwordError) {
-      return;
-    }
     if (email && password) {
-      authContext.login({ username: email, password: password });
-      // TODO Login
-
-      //navigate(getCurrentWeekMealPlanURL());
-      console.log(email, password);
+      await authContext
+        .login({ username: email, password: password })
+        .then((res) => {
+          if (res.status == HttpStatusCode.OK) {
+            navigate(getCurrentWeekMealPlanURL());
+          } else {
+            throw Error("Invalid credentials");
+          }
+        })
+        .catch((err) => {
+          setEmailError(true);
+          setPasswordError(true);
+          setHelperText(err.message);
+        });
     }
   };
 
   const handleEmailChange = (e: any) => {
     e.preventDefault();
     if (emailError) {
+      setHelperText("");
       setEmailError(false);
     }
     setEmail(e.target.value);
@@ -50,6 +50,7 @@ export const Login: React.FC<{}> = () => {
   const handlePasswordChange = (e: any) => {
     e.preventDefault();
     if (passwordError) {
+      setHelperText("");
       setPasswordError(false);
     }
     setPassword(e.target.value);
@@ -62,7 +63,7 @@ export const Login: React.FC<{}> = () => {
       <p>
         Don't have an account yet? <Link to={`/register`}>Register</Link>
       </p>
-      <form method={'post'} onSubmit={handleSubmit}>
+      <form method={"post"} onSubmit={handleSubmit}>
         <Spacer size={Spacing.m} />
         <TextField
           required
@@ -72,6 +73,7 @@ export const Login: React.FC<{}> = () => {
           onChange={handleEmailChange}
           value={email}
           error={emailError}
+          helperText={helperText}
           variant="filled"
         />
         <Spacer size={Spacing.m} />
@@ -83,6 +85,7 @@ export const Login: React.FC<{}> = () => {
           onChange={handlePasswordChange}
           value={password}
           error={passwordError}
+          helperText={helperText}
           variant="filled"
         />
         <Spacer size={Spacing.m} />

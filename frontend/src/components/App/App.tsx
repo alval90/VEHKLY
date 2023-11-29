@@ -1,6 +1,6 @@
-import './App.css';
-import background from '../../images/background.jpg';
-import { Outlet } from 'react-router-dom';
+import "./App.css";
+import background from "../../images/background.jpg";
+import { Outlet } from "react-router-dom";
 
 function App() {
   return (

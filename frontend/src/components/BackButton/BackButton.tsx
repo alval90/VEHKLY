@@ -1,5 +1,5 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export let BackButton: React.FC<{}> = () => {
   let navigate = useNavigate();
@@ -12,11 +12,11 @@ export let BackButton: React.FC<{}> = () => {
       <p
         onClick={handleClick}
         style={{
-          paddingLeft: '20px',
-          alignSelf: 'baseline',
-          color: 'blue',
-          cursor: 'pointer',
-          fontWeight: 700
+          paddingLeft: "20px",
+          alignSelf: "baseline",
+          color: "blue",
+          cursor: "pointer",
+          fontWeight: 700,
         }}
       >
         ← back
