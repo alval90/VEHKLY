@@ -23,7 +23,7 @@ class Ingredient(models.Model):
     recipe = models.ForeignKey(Recipe, related_name='ingredients', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return self.title
 
 class MealPlan(models.Model):
     user = models.ForeignKey(User, default=1, on_delete=models.CASCADE)

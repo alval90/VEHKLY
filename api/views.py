@@ -98,15 +98,24 @@ class RecipeView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        request.data['user'] = request.user.id
+        mut_data = request.data.copy()
 
-        serializer = RecipeSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+        recipe_instance = None
+        ingredients = mut_data.pop('ingredients')
+
+        mut_data['user'] = request.user.id
+        recipeSerializer = RecipeSerializer(data=mut_data)
+        if recipeSerializer.is_valid():
+            recipeSerializer.save()
+            recipe_instance = recipeSerializer.instance
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(recipeSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+        for ingredient in ingredients:
+            ingredientJson = json.loads(ingredient)
+            models.Ingredient.objects.create(recipe=recipe_instance, **ingredientJson)
+
+        return Response(recipeSerializer.data, status=status.HTTP_200_OK)
 class MealPlanView(APIView):
     parser_classes = (JSONParser,)
 
@@ -131,7 +140,7 @@ class MealPlanPutView(APIView):
             serializer = MealPlanSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
-                mp = serializer.instance()
+                mp = serializer.instance
             else:
                 return Response(serializer.error, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
