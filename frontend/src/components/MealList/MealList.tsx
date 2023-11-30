@@ -8,6 +8,7 @@ import { Meal } from "../AddMeal/AddMeal";
 import { BackButton } from "../BackButton/BackButton";
 
 import weekReturnedMock from "./MockData/weekReturned.json";
+import {getMealPlan} from "../../api/MealPlan.ts";
 
 export const MealList = () => {
   let [mondayMeals, setMondayMeals] = useState<Meal[]>();
@@ -20,11 +21,18 @@ export const MealList = () => {
   let query = useQuery();
   useEffect(() => {
     let year = query.get("year");
-    let month = query.get("month");
+    let week = query.get("week");
 
-    // TODO: fetch meal info
+    if (year && week) {
+      getMealPlan(year, week)
+        .then(res => res.json())
+        .then(initMealList)
+    }
+  }, []);
 
-    for (let meal of weekReturnedMock) {
+  const initMealList = (meals) => {
+    console.log(meals);
+    for (let meal of meals) {
       let { breakfast, lunch, dinner } = meal;
       let mealsUpdated = [breakfast, lunch, dinner].filter(
         (meal) => meal !== null,
@@ -47,7 +55,7 @@ export const MealList = () => {
           break;
       }
     }
-  });
+  };
 
   let mondayList = mondayMeals?.map((meal) => <MealView meal={meal} />);
   let tuesdayList = tuesdayMeals?.map((meal) => <MealView meal={meal} />);
