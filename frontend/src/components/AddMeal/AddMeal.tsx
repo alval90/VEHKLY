@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, ContainerSize } from "../Container/Container";
-import { useAuth } from "../../contexts/AuthContext";
+import {HttpStatusCode, useAuth} from "../../contexts/AuthContext";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Spacer, Spacing } from "../Spacer/Spacer";
 import { ActionCard } from "../ActionCard/ActionCard";
@@ -10,6 +10,8 @@ import { useQuery } from "../../utils/hooks";
 import { BackButton } from "../BackButton/BackButton";
 
 import mockMeals from "./MockData/meals.json";
+import {deleteRecipe, getRecipes} from "../../api/RecipeApi.ts";
+import {getCurrentWeekMealPlanURL} from "../../utils/dateUtils.ts";
 
 export interface Meal {
   title: string;
@@ -27,16 +29,14 @@ export const AddMeal: React.FC<{}> = () => {
   let [meals, setMeals] = useState<Meal[]>();
   const [searchInput, setSearchInput] = useState("");
 
-  const { user } = useAuth();
   const { year, week } = useParams();
   const query = useQuery();
   const navigate = useNavigate();
   useEffect(() => {
-    /*if (!user) {
-      navigate("/login");
-    }*/
-    setMeals(mockMeals);
-  }, [mockMeals]);
+    getRecipes()
+      .then(res => res.json())
+      .then(setMeals);
+  },[]);
 
   const handleSearchChange = (e: any) => {
     e.preventDefault();
@@ -49,11 +49,19 @@ export const AddMeal: React.FC<{}> = () => {
     navigate(-1);
   };
 
-  const deleteMeal = (mealTitle: string) => {
-    // TODO: delete meal to db
-
-    let updatedMeals = meals?.filter((meal) => meal.title !== mealTitle);
-    setMeals(updatedMeals);
+  const deleteMeal = async (mealTitle: string) => {
+    await deleteRecipe(mealTitle)
+      .then((res) => {
+          if (res.status == HttpStatusCode.OK) {
+            const updatedMeals = meals?.filter((meal) => meal.title !== mealTitle);
+            setMeals(updatedMeals);
+          } else {
+            throw Error("Unable to delte recipe");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
   };
 
   const mealCards = meals

@@ -14,6 +14,8 @@ from rest_framework import status
 from api import models
 from .serializers import IngredientSerializer, RecipeSerializer, MealPlanSerializer
 
+# Der Code zur login_, logout_ und session_view ist angelehnt an das Tutorial https://testdriven.io/blog/django-spa-auth/
+# Teile des Codes wurden identisch uebernommen.
 @require_POST
 def login_view(request):
     data = json.loads(request.body)
@@ -21,7 +23,7 @@ def login_view(request):
     password = data.get('password')
 
     if username is None or password is None:
-        return JsonResponse({'detail': 'Please provide username and passowrd.'}, status=400)
+        return JsonResponse({'detail': 'No user name or password provided.'}, status=400)
 
     user = authenticate(username=username, password=password)
 
@@ -39,6 +41,12 @@ def logout_view(request):
     logout(request)
     return JsonResponse({'detail': 'Successfully logged out.'})
 
+@ensure_csrf_cookie
+def session_view(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'isAuthenticated': False})
+
+    return JsonResponse({'isAuthenticated': True})
 
 @require_POST
 def register_view(request):
@@ -57,17 +65,10 @@ def register_view(request):
 
     return JsonResponse({'detail': 'Successfully registered and logged in.'})
 
-@ensure_csrf_cookie
-def session_view(request):
-    if not request.user.is_authenticated:
-        return JsonResponse({'isAuthenticated': False})
-
-    return JsonResponse({'isAuthenticated': True})
-
 class IngredientView(APIView):
     parser_classes = (JSONParser,)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, name):
         serializer = IngredientSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -78,10 +79,15 @@ class IngredientView(APIView):
 class RecipeViewDetailed(APIView):
     parser_classes = (MultiPartParser,)
 
-    def get(self, request, name):
-        recipe = models.Recipe.objects.filter(user=request.user, name=name)
-        serializer = RecipeSerializer(recipe, many=True)
+    def get(self, request, title):
+        recipe = models.Recipe.objects.get(user=request.user, title=title)
+        serializer = RecipeSerializer(recipe)
         return Response(serializer.data)
+
+    def delete(self, request, title):
+        recipe = models.Recipe.objects.filter(user=request.user, title=title)
+        recipe.delete()
+        return Response(status=status.HTTP_200_OK)
 
 class RecipeView(APIView):
     parser_classes = (MultiPartParser,)
@@ -109,10 +115,29 @@ class MealPlanView(APIView):
         serializer = MealPlanSerializer(recipe, many=True)
         return Response(serializer.data)
 
-    def post(self, request, year, week):
-        request.data['user'] = request.user.id
+class MealPlanPutView(APIView):
+    parser_classes = (JSONParser,)
 
-        serializer = MealPlanSerializer(data=request.data)
+    def put(self, request, year, week, day, meal_type):
+        user = request.user.id
+
+        try:
+            mp = models.MealPlan.objects.get(user=user, year=year, week=week, day=day)
+        except models.MealPlan.DoesNotExist:
+            mp = None
+
+        if mp is None:
+            data = {'user':user, 'year':year,'week':week,'day':day}
+            serializer = MealPlanSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                mp = serializer.instance()
+            else:
+                return Response(serializer.error, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        recipe = models.Recipe.objects.get(pk=request.data["id"])
+        type_update = {meal_type: recipe}
+        serializer = MealPlanSerializer(mp, data=type_update, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)

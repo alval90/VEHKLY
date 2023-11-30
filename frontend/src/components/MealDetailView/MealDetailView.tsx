@@ -6,21 +6,21 @@ import { Ingredient, Meal } from "../AddMeal/AddMeal";
 import { Spacer, Spacing } from "../Spacer/Spacer";
 import defaultImage from "../../images/defaultImage.jpg";
 
-import mealMock from "./MockData/meal.json";
+import {getRecipe} from "../../api/RecipeApi.ts";
 
 export const MealDetailView = () => {
-  let [meal, setMeal] = useState<Meal>();
+  const [meal, setMeal] = useState<Meal>();
 
-  let navigate = useNavigate();
-  let query = useQuery();
+  const navigate = useNavigate();
+  const query = useQuery();
   useEffect(() => {
-    let mealTitle = query.get("meal");
-    console.log(mealTitle);
-
-    // TODO: fetch meal info
-
-    setMeal(mealMock);
-  });
+    const mealTitle = query.get("meal");
+    if(mealTitle) {
+      getRecipe(mealTitle)
+        .then(res => res.json())
+        .then(setMeal);
+    }
+  }, []);
 
   const handleClick = (e: any) => {
     navigate(-1);
