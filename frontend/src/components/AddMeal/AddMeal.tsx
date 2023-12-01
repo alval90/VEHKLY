@@ -12,6 +12,7 @@ import { BackButton } from "../BackButton/BackButton";
 import mockMeals from "./MockData/meals.json";
 import {deleteRecipe, getRecipes} from "../../api/RecipeApi.ts";
 import {getCurrentWeekMealPlanURL} from "../../utils/dateUtils.ts";
+import {putMealPlan} from "../../api/MealPlan.ts";
 
 export interface Meal {
   title: string;
@@ -44,9 +45,16 @@ export const AddMeal: React.FC<{}> = () => {
   };
 
   const addMeal = (mealTitle: string) => {
-    // TODO: post meal to db
-    // use year and week url params + query params
-    navigate(-1);
+    const day = query.get("day");
+    const type = query.get("type");
+    console.log(`${year}, ${week}, ${day}, ${type}`);
+    if (year && week && day && type) {
+      putMealPlan(year, week, day, type, mealTitle)
+        .then(res => res.json())
+        .then(data => {
+          navigate(-1);
+        })
+    }
   };
 
   const deleteMeal = async (mealTitle: string) => {

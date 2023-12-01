@@ -22,7 +22,6 @@ export const MealList = () => {
   useEffect(() => {
     let year = query.get("year");
     let week = query.get("week");
-
     if (year && week) {
       getMealPlan(year, week)
         .then(res => res.json())
@@ -31,26 +30,25 @@ export const MealList = () => {
   }, []);
 
   const initMealList = (meals) => {
-    console.log(meals);
     for (let meal of meals) {
       let { breakfast, lunch, dinner } = meal;
       let mealsUpdated = [breakfast, lunch, dinner].filter(
         (meal) => meal !== null,
       );
-      switch (meal.day) {
-        case "Monday":
+      switch (meal.day.toLowerCase()) {
+        case "monday":
           setMondayMeals(mealsUpdated);
           break;
-        case "Tuesday":
+        case "tuesday":
           setTuesdayMeals(mealsUpdated);
           break;
-        case "Wednesday":
+        case "wednesday":
           setWednesdayMeals(mealsUpdated);
           break;
-        case "Thursday":
+        case "thursday":
           setThursdayMeals(mealsUpdated);
           break;
-        case "Friday":
+        case "friday":
           setFridayMeals(mealsUpdated);
           break;
       }

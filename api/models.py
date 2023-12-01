@@ -36,3 +36,6 @@ class MealPlan(models.Model):
     lunch = models.ForeignKey(Recipe, related_name='lunch_plan', null=True, blank=True, on_delete=models.SET_NULL)
     dinner = models.ForeignKey(Recipe, related_name='dinner_plan', null=True, blank=True, on_delete=models.SET_NULL)
 
+    def __str__(self):
+        return f'{self.year} CW {self.week} {self.day}'
+

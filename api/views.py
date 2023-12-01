@@ -143,12 +143,21 @@ class MealPlanPutView(APIView):
                 mp = serializer.instance
             else:
                 return Response(serializer.error, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        try:
+            recipe = models.Recipe.objects.get(user=user, title=request.data["title"])
+        except models.Recipe.DoesNotExist:
+            return JsonResponse({'detail': 'Recipe does not exist'}, status=400)
 
-        recipe = models.Recipe.objects.get(pk=request.data["id"])
-        type_update = {meal_type: recipe}
-        serializer = MealPlanSerializer(mp, data=type_update, partial=True)
+        serializer = MealPlanSerializer(mp, data={"id":recipe.id}, partial=True)
         if serializer.is_valid():
-            serializer.save()
+            if meal_type == "breakfast":
+                serializer.save(breakfast=recipe)
+            elif meal_type == "lunch":
+                serializer.save(lunch=recipe)
+            elif meal_type == "dinner":
+                serializer.save(dinner=recipe)
+            else:
+                Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
