@@ -8,7 +8,7 @@ import { Meal } from "../AddMeal/AddMeal";
 import { BackButton } from "../BackButton/BackButton";
 
 import weekReturnedMock from "./MockData/weekReturned.json";
-import {getMealPlan} from "../../api/MealPlan.ts";
+import { getMealPlan } from "../../api/MealPlan.ts";
 
 export const MealList = () => {
   let [mondayMeals, setMondayMeals] = useState<Meal[]>();
@@ -24,8 +24,8 @@ export const MealList = () => {
     let week = query.get("week");
     if (year && week) {
       getMealPlan(year, week)
-        .then(res => res.json())
-        .then(initMealList)
+        .then((res) => res.json())
+        .then(initMealList);
     }
   }, []);
 

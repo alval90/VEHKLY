@@ -6,7 +6,7 @@ import { Ingredient, Meal } from "../AddMeal/AddMeal";
 import { Spacer, Spacing } from "../Spacer/Spacer";
 import defaultImage from "../../images/defaultImage.jpg";
 
-import {getRecipe} from "../../api/RecipeApi.ts";
+import { getRecipe } from "../../api/RecipeApi.ts";
 
 export const MealDetailView = () => {
   const [meal, setMeal] = useState<Meal>();
@@ -15,9 +15,9 @@ export const MealDetailView = () => {
   const query = useQuery();
   useEffect(() => {
     const mealTitle = query.get("meal");
-    if(mealTitle) {
+    if (mealTitle) {
       getRecipe(mealTitle)
-        .then(res => res.json())
+        .then((res) => res.json())
         .then(setMeal);
     }
   }, []);

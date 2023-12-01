@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
 import { Ingredient } from "../AddMeal/AddMeal";
 import { BackButton } from "../BackButton/BackButton";
-import {postRecipe} from "../../api/RecipeApi.ts";
+import { postRecipe } from "../../api/RecipeApi.ts";
 
 export const NewMeal: React.FC<{}> = () => {
   const [recipeImage, setRecipeImage] = useState<File>();
@@ -42,18 +42,18 @@ export const NewMeal: React.FC<{}> = () => {
 
     const formData = new FormData();
     if (recipeImage) {
-      formData.append('imagePath', recipeImage);
+      formData.append("imagePath", recipeImage);
     }
-    formData.append('title', title);
+    formData.append("title", title);
     formData.append("description", recipeDescription);
     for (const ingredient of ingredients) {
-      formData.append('ingredients', JSON.stringify(ingredient));
+      formData.append("ingredients", JSON.stringify(ingredient));
     }
     postRecipe(formData)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         navigate(-1);
-      })
+      });
   };
 
   const handleTitleChange = (e: any) => {

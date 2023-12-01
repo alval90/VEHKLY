@@ -8,21 +8,60 @@ import { MediaCard } from "../MediaCard/MediaCard";
 import { ActionCard } from "../ActionCard/ActionCard";
 import YearMenu from "../Menu/YearMenu";
 import Button from "@mui/material/Button";
-import {getMealPlan} from "../../api/MealPlan.ts";
+import { getMealPlan, putMealPlan } from "../../api/MealPlan.ts";
 
 export enum MealDay {
-  Monday,
-  Tuesday,
-  Wednesday,
-  Thursday,
-  Friday,
+  Monday = "monday",
+  Tuesday = "tuesday",
+  Wednesday = "wednesday",
+  Thursday = "thursday",
+  Friday = "friday",
 }
 
 export enum MealType {
-  breakfast,
-  lunch,
-  dinner,
+  breakfast = "breakfast",
+  lunch = "lunch",
+  dinner = "dinner",
 }
+const initBreakfast = [
+  <ActionCard
+    label={"+ Add meal"}
+    href={"addMeal?type=breakfast&day=monday"}
+  />,
+  <ActionCard
+    label={"+ Add meal"}
+    href={"addMeal?type=breakfast&day=tuesday"}
+  />,
+  <ActionCard
+    label={"+ Add meal"}
+    href={"addMeal?type=breakfast&day=wednesday"}
+  />,
+  <ActionCard
+    label={"+ Add meal"}
+    href={"addMeal?type=breakfast&day=thursday"}
+  />,
+  <ActionCard
+    label={"+ Add meal"}
+    href={"addMeal?type=breakfast&day=friday"}
+  />,
+];
+const initLunch = [
+  <ActionCard label={"+ Add meal"} href={"addMeal?type=lunch&day=monday"} />,
+  <ActionCard label={"+ Add meal"} href={"addMeal?type=lunch&day=tuesday"} />,
+  <ActionCard label={"+ Add meal"} href={"addMeal?type=lunch&day=wednesday"} />,
+  <ActionCard label={"+ Add meal"} href={"addMeal?type=lunch&day=thursday"} />,
+  <ActionCard label={"+ Add meal"} href={"addMeal?type=lunch&day=friday"} />,
+];
+const initDinner = [
+  <ActionCard label={"+ Add meal"} href={"addMeal?type=dinner&day=monday"} />,
+  <ActionCard label={"+ Add meal"} href={"addMeal?type=dinner&day=tuesday"} />,
+  <ActionCard
+    label={"+ Add meal"}
+    href={"addMeal?type=dinner&day=wednesday"}
+  />,
+  <ActionCard label={"+ Add meal"} href={"addMeal?type=dinner&day=thursday"} />,
+  <ActionCard label={"+ Add meal"} href={"addMeal?type=dinner&day=friday"} />,
+];
 
 export const getMealIndex = (mealDay: MealDay): number => {
   switch (mealDay) {
@@ -72,6 +111,7 @@ export const MealPlan: React.FC = () => {
   const { year, week } = useParams();
   const navigate = useNavigate();
 
+  const [shouldUpdate, setShouldUpdate] = useState(false);
   const [breakfast, setBreakfast] = useState<JSX.Element[]>([
     <ActionCard
       label={"+ Add meal"}
@@ -123,68 +163,84 @@ export const MealPlan: React.FC = () => {
     />,
     <ActionCard label={"+ Add meal"} href={"addMeal?type=dinner&day=friday"} />,
   ]);
-  useEffect( () => {
+  useEffect(() => {
     if (!year || !week) {
       return;
     } else {
+      console.log("here???");
       getMealPlan(year, week)
-        .then(res => res.json())
+        .then((res) => res.json())
         .then(initMeals);
     }
-  }, [year, week]);
+  }, [shouldUpdate]);
 
   const initMeals = (mealPlan) => {
     const initBreakfast = [
-    <ActionCard
-      label={"+ Add meal"}
-      href={"addMeal?type=breakfast&day=monday"}
-    />,
-    <ActionCard
-      label={"+ Add meal"}
-      href={"addMeal?type=breakfast&day=tuesday"}
-    />,
-    <ActionCard
-      label={"+ Add meal"}
-      href={"addMeal?type=breakfast&day=wednesday"}
-    />,
-    <ActionCard
-      label={"+ Add meal"}
-      href={"addMeal?type=breakfast&day=thursday"}
-    />,
-    <ActionCard
-      label={"+ Add meal"}
-      href={"addMeal?type=breakfast&day=friday"}
-    />,
-  ];
+      <ActionCard
+        label={"+ Add meal"}
+        href={"addMeal?type=breakfast&day=monday"}
+      />,
+      <ActionCard
+        label={"+ Add meal"}
+        href={"addMeal?type=breakfast&day=tuesday"}
+      />,
+      <ActionCard
+        label={"+ Add meal"}
+        href={"addMeal?type=breakfast&day=wednesday"}
+      />,
+      <ActionCard
+        label={"+ Add meal"}
+        href={"addMeal?type=breakfast&day=thursday"}
+      />,
+      <ActionCard
+        label={"+ Add meal"}
+        href={"addMeal?type=breakfast&day=friday"}
+      />,
+    ];
     const initLunch = [
-    <ActionCard label={"+ Add meal"} href={"addMeal?type=lunch&day=monday"} />,
-    <ActionCard label={"+ Add meal"} href={"addMeal?type=lunch&day=tuesday"} />,
-    <ActionCard
-      label={"+ Add meal"}
-      href={"addMeal?type=lunch&day=wednesday"}
-    />,
-    <ActionCard
-      label={"+ Add meal"}
-      href={"addMeal?type=lunch&day=thursday"}
-    />,
-    <ActionCard label={"+ Add meal"} href={"addMeal?type=lunch&day=friday"} />,
-  ];
+      <ActionCard
+        label={"+ Add meal"}
+        href={"addMeal?type=lunch&day=monday"}
+      />,
+      <ActionCard
+        label={"+ Add meal"}
+        href={"addMeal?type=lunch&day=tuesday"}
+      />,
+      <ActionCard
+        label={"+ Add meal"}
+        href={"addMeal?type=lunch&day=wednesday"}
+      />,
+      <ActionCard
+        label={"+ Add meal"}
+        href={"addMeal?type=lunch&day=thursday"}
+      />,
+      <ActionCard
+        label={"+ Add meal"}
+        href={"addMeal?type=lunch&day=friday"}
+      />,
+    ];
     const initDinner = [
-    <ActionCard label={"+ Add meal"} href={"addMeal?type=dinner&day=monday"} />,
-    <ActionCard
-      label={"+ Add meal"}
-      href={"addMeal?type=dinner&day=tuesday"}
-    />,
-    <ActionCard
-      label={"+ Add meal"}
-      href={"addMeal?type=dinner&day=wednesday"}
-    />,
-    <ActionCard
-      label={"+ Add meal"}
-      href={"addMeal?type=dinner&day=thursday"}
-    />,
-    <ActionCard label={"+ Add meal"} href={"addMeal?type=dinner&day=friday"} />,
-  ];
+      <ActionCard
+        label={"+ Add meal"}
+        href={"addMeal?type=dinner&day=monday"}
+      />,
+      <ActionCard
+        label={"+ Add meal"}
+        href={"addMeal?type=dinner&day=tuesday"}
+      />,
+      <ActionCard
+        label={"+ Add meal"}
+        href={"addMeal?type=dinner&day=wednesday"}
+      />,
+      <ActionCard
+        label={"+ Add meal"}
+        href={"addMeal?type=dinner&day=thursday"}
+      />,
+      <ActionCard
+        label={"+ Add meal"}
+        href={"addMeal?type=dinner&day=friday"}
+      />,
+    ];
 
     for (const meal of mealPlan) {
       const mealDay: MealDay = getMealDay(meal.day);
@@ -223,11 +279,11 @@ export const MealPlan: React.FC = () => {
         );
       }
     }
-
+    console.log(initBreakfast);
     setBreakfast(initBreakfast);
     setLunch(initLunch);
     setDinner(initDinner);
-  }
+  };
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     navigate(`/mealplan/${year}/${value}`);
@@ -240,19 +296,37 @@ export const MealPlan: React.FC = () => {
   ) => {
     switch (mealType) {
       case MealType.breakfast:
-        const updateBreakfast = [...breakfast];
-        updateBreakfast[mealIndex] = getActionCard(mealDay, mealType);
-        setBreakfast(updateBreakfast);
+        if (year && week) {
+          putMealPlan(year, week, mealDay.toString(), mealType.toString(), null)
+            .then((res) => res.json())
+            .then(() => {
+              getMealPlan(year, week)
+                .then((res) => res.json())
+                .then(initMeals);
+            });
+        }
         break;
       case MealType.lunch:
-        const updatedLunch = [...lunch];
-        updatedLunch[mealIndex] = getActionCard(mealDay, mealType);
-        setLunch(updatedLunch);
+        if (year && week) {
+          putMealPlan(year, week, mealDay.toString(), mealType.toString(), null)
+            .then((res) => res.json())
+            .then(() => {
+              getMealPlan(year, week)
+                .then((res) => res.json())
+                .then(initMeals);
+            });
+        }
         break;
       case MealType.dinner:
-        const updatedDinner = [...dinner];
-        updatedDinner[mealIndex] = getActionCard(mealDay, mealType);
-        setDinner(updatedDinner);
+        if (year && week) {
+          putMealPlan(year, week, mealDay.toString(), mealType.toString(), null)
+            .then((res) => res.json())
+            .then(() => {
+              getMealPlan(year, week)
+                .then((res) => res.json())
+                .then(initMeals);
+            });
+        }
         break;
     }
   };
@@ -326,12 +400,16 @@ export const MealPlan: React.FC = () => {
         Create List
       </Button>
       <Spacer size={Spacing.xs} />
-      <p style={{ cursor: "pointer" }} onClick={() => {logout()
-        .then(res => res.json())
-        .then(() => {
-          navigate("/");
-        })
-      }}>
+      <p
+        style={{ cursor: "pointer" }}
+        onClick={() => {
+          logout()
+            .then((res) => res.json())
+            .then(() => {
+              navigate("/");
+            });
+        }}
+      >
         Logout
       </p>
       <Spacer size={Spacing.s} />

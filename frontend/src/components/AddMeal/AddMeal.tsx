@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, ContainerSize } from "../Container/Container";
-import {HttpStatusCode, useAuth} from "../../contexts/AuthContext";
+import { HttpStatusCode, useAuth } from "../../contexts/AuthContext";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Spacer, Spacing } from "../Spacer/Spacer";
 import { ActionCard } from "../ActionCard/ActionCard";
@@ -10,9 +10,9 @@ import { useQuery } from "../../utils/hooks";
 import { BackButton } from "../BackButton/BackButton";
 
 import mockMeals from "./MockData/meals.json";
-import {deleteRecipe, getRecipes} from "../../api/RecipeApi.ts";
-import {getCurrentWeekMealPlanURL} from "../../utils/dateUtils.ts";
-import {putMealPlan} from "../../api/MealPlan.ts";
+import { deleteRecipe, getRecipes } from "../../api/RecipeApi.ts";
+import { getCurrentWeekMealPlanURL } from "../../utils/dateUtils.ts";
+import { putMealPlan } from "../../api/MealPlan.ts";
 
 export interface Meal {
   title: string;
@@ -35,9 +35,9 @@ export const AddMeal: React.FC<{}> = () => {
   const navigate = useNavigate();
   useEffect(() => {
     getRecipes()
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(setMeals);
-  },[]);
+  }, []);
 
   const handleSearchChange = (e: any) => {
     e.preventDefault();
@@ -50,26 +50,28 @@ export const AddMeal: React.FC<{}> = () => {
     console.log(`${year}, ${week}, ${day}, ${type}`);
     if (year && week && day && type) {
       putMealPlan(year, week, day, type, mealTitle)
-        .then(res => res.json())
-        .then(data => {
+        .then((res) => res.json())
+        .then((data) => {
           navigate(-1);
-        })
+        });
     }
   };
 
   const deleteMeal = async (mealTitle: string) => {
     await deleteRecipe(mealTitle)
       .then((res) => {
-          if (res.status == HttpStatusCode.OK) {
-            const updatedMeals = meals?.filter((meal) => meal.title !== mealTitle);
-            setMeals(updatedMeals);
-          } else {
-            throw Error("Unable to delte recipe");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        if (res.status == HttpStatusCode.OK) {
+          const updatedMeals = meals?.filter(
+            (meal) => meal.title !== mealTitle,
+          );
+          setMeals(updatedMeals);
+        } else {
+          throw Error("Unable to delte recipe");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const mealCards = meals

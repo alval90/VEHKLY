@@ -9,13 +9,14 @@ export const getRecipes = async (): Promise<globalThis.Response> => {
       "X-CSRFToken": cookies.get("csrftoken"),
     },
     credentials: "same-origin",
-  })
-    .then((res: globalThis.Response) => {
-      return res;
-    });
-}
+  }).then((res: globalThis.Response) => {
+    return res;
+  });
+};
 
-export const getRecipe = async (recipeName : string): Promise<globalThis.Response> => {
+export const getRecipe = async (
+  recipeName: string,
+): Promise<globalThis.Response> => {
   const cookies = new Cookies();
   return await fetch(`/api/recipe/${recipeName}`, {
     method: "GET",
@@ -24,13 +25,14 @@ export const getRecipe = async (recipeName : string): Promise<globalThis.Respons
       "X-CSRFToken": cookies.get("csrftoken"),
     },
     credentials: "same-origin",
-  })
-    .then((res: globalThis.Response) => {
-      return res;
-    });
-}
+  }).then((res: globalThis.Response) => {
+    return res;
+  });
+};
 
-export const deleteRecipe = async (recipeName : string): Promise<globalThis.Response> => {
+export const deleteRecipe = async (
+  recipeName: string,
+): Promise<globalThis.Response> => {
   const cookies = new Cookies();
   return await fetch(`/api/recipe/${recipeName}`, {
     method: "DELETE",
@@ -39,13 +41,12 @@ export const deleteRecipe = async (recipeName : string): Promise<globalThis.Resp
       "X-CSRFToken": cookies.get("csrftoken"),
     },
     credentials: "same-origin",
-  })
-    .then((res: globalThis.Response) => {
-      return res;
-    });
-}
+  }).then((res: globalThis.Response) => {
+    return res;
+  });
+};
 
-export const postRecipe = async (formData : FormData) => {
+export const postRecipe = async (formData: FormData) => {
   const cookies = new Cookies();
   return await fetch(`/api/recipe/`, {
     method: "POST",
@@ -54,8 +55,7 @@ export const postRecipe = async (formData : FormData) => {
     },
     credentials: "same-origin",
     body: formData,
-  })
-    .then((res: globalThis.Response) => {
-      return res;
-    });
-}
+  }).then((res: globalThis.Response) => {
+    return res;
+  });
+};
