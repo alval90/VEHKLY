@@ -27,11 +27,15 @@ export const MealList = () => {
         .then((res) => res.json())
         .then(initMealList);
     }
+    window.scrollTo(0, 0);
   }, []);
 
   const initMealList = (meals) => {
     for (let meal of meals) {
       let { breakfast, lunch, dinner } = meal;
+      if (!breakfast && !lunch && !dinner) {
+        continue;
+      }
       let mealsUpdated = [breakfast, lunch, dinner].filter(
         (meal) => meal !== null,
       );

@@ -111,7 +111,6 @@ export const MealPlan: React.FC = () => {
   const { year, week } = useParams();
   const navigate = useNavigate();
 
-  const [shouldUpdate, setShouldUpdate] = useState(false);
   const [breakfast, setBreakfast] = useState<JSX.Element[]>([
     <ActionCard
       label={"+ Add meal"}
@@ -172,7 +171,7 @@ export const MealPlan: React.FC = () => {
         .then((res) => res.json())
         .then(initMeals);
     }
-  }, [shouldUpdate]);
+  }, [year, week]);
 
   const initMeals = (mealPlan) => {
     const initBreakfast = [
