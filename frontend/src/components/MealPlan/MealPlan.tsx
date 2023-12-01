@@ -326,7 +326,12 @@ export const MealPlan: React.FC = () => {
         Create List
       </Button>
       <Spacer size={Spacing.xs} />
-      <p style={{ cursor: "pointer" }} onClick={() => logout()}>
+      <p style={{ cursor: "pointer" }} onClick={() => {logout()
+        .then(res => res.json())
+        .then(() => {
+          navigate("/");
+        })
+      }}>
         Logout
       </p>
       <Spacer size={Spacing.s} />
