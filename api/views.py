@@ -144,11 +144,17 @@ class MealPlanPutView(APIView):
             else:
                 return Response(serializer.error, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         try:
-            recipe = models.Recipe.objects.get(user=user, title=request.data["title"])
+            if request.data["title"] is not None:
+                recipe = models.Recipe.objects.get(user=user, title=request.data["title"])
+            else:
+                recipe = None
         except models.Recipe.DoesNotExist:
             return JsonResponse({'detail': 'Recipe does not exist'}, status=400)
 
-        serializer = MealPlanSerializer(mp, data={"id":recipe.id}, partial=True)
+        if recipe is not None:
+            serializer = MealPlanSerializer(mp, data={"id":recipe.id}, partial=True)
+        else:
+            serializer = MealPlanSerializer(mp, data={"id": -1}, partial=True)
         if serializer.is_valid():
             if meal_type == "breakfast":
                 serializer.save(breakfast=recipe)
