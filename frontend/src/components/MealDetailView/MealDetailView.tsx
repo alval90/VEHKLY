@@ -83,6 +83,7 @@ export const MealView: React.FC<MealViewProp> = ({ meal }) => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            whiteSpace: "pre-line",
           }}
         >
           <h2>Recipe</h2>

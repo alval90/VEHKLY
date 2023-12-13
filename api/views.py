@@ -1,23 +1,22 @@
+"""This module defines all views used as part of the /api endpoints"""
 import json
 
-from django import forms
-from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.http import JsonResponse
-from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework.response import Response
 from rest_framework import status
 from api import models
-from .serializers import IngredientSerializer, RecipeSerializer, MealPlanSerializer
+from .serializers import RecipeSerializer, MealPlanSerializer
 
-# Der Code zur login_, logout_ und session_view ist angelehnt an das Tutorial https://testdriven.io/blog/django-spa-auth/
-# Teile des Codes wurden identisch uebernommen.
 @require_POST
 def login_view(request):
+    """This view defines the logic to login a user by username and password
+
+    Code adapted from https://testdriven.io/blog/django-spa-auth/"""
     data = json.loads(request.body)
     username = data.get('username')
     password = data.get('password')
@@ -35,21 +34,20 @@ def login_view(request):
 
 
 def logout_view(request):
+    """This view defines the logic to logout a user
+
+    Code adapted from https://testdriven.io/blog/django-spa-auth/"""
     if not request.user.is_authenticated:
         return JsonResponse({'detail': 'User not logged in.'}, status=400)
 
     logout(request)
     return JsonResponse({'detail': 'Successfully logged out.'})
 
-@ensure_csrf_cookie
-def session_view(request):
-    if not request.user.is_authenticated:
-        return JsonResponse({'isAuthenticated': False})
-
-    return JsonResponse({'isAuthenticated': True})
-
 @require_POST
 def register_view(request):
+    """This view defines the logic to register a new user by username and password
+
+    Code adapted from https://testdriven.io/blog/django-spa-auth/"""
     data = json.loads(request.body)
     username = data.get('username')
     password = data.get('password')
@@ -65,82 +63,84 @@ def register_view(request):
 
     return JsonResponse({'detail': 'Successfully registered and logged in.'})
 
-class IngredientView(APIView):
-    parser_classes = (JSONParser,)
-
-    def post(self, request, name):
-        serializer = IngredientSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 class RecipeViewDetailed(APIView):
+    """This view provides the functionality to GET and DELETE recipes"""
     parser_classes = (MultiPartParser,)
 
     def get(self, request, title):
+        """GETs a single recipe"""
         recipe = models.Recipe.objects.get(user=request.user, title=title)
         serializer = RecipeSerializer(recipe)
         return Response(serializer.data)
 
     def delete(self, request, title):
+        """DELETEs a single recipe"""
         recipe = models.Recipe.objects.filter(user=request.user, title=title)
         recipe.delete()
         return Response(status=status.HTTP_200_OK)
 
 class RecipeView(APIView):
+    """This view provides the logic to GET all recipes of a given user and POST a new recipe"""
     parser_classes = (MultiPartParser,)
 
     def get(self, request):
+        """GETs all recipes of a given user"""
         recipe = models.Recipe.objects.filter(user=request.user)
         serializer = RecipeSerializer(recipe, many=True)
         return Response(serializer.data)
 
     def post(self, request):
+        """POSTs a new recipe"""
         mut_data = request.data.copy()
 
         recipe_instance = None
         ingredients = mut_data.pop('ingredients')
 
         mut_data['user'] = request.user.id
-        recipeSerializer = RecipeSerializer(data=mut_data)
-        if recipeSerializer.is_valid():
-            recipeSerializer.save()
-            recipe_instance = recipeSerializer.instance
+        recipe_serializer = RecipeSerializer(data=mut_data)
+        if recipe_serializer.is_valid():
+            recipe_serializer.save()
+            recipe_instance = recipe_serializer.instance
         else:
-            return Response(recipeSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(recipe_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         for ingredient in ingredients:
-            ingredientJson = json.loads(ingredient)
-            models.Ingredient.objects.create(recipe=recipe_instance, **ingredientJson)
+            ingredient_json = json.loads(ingredient)
+            models.Ingredient.objects.create(recipe=recipe_instance, **ingredient_json)
 
-        return Response(recipeSerializer.data, status=status.HTTP_200_OK)
+        return Response(recipe_serializer.data, status=status.HTTP_200_OK)
+
 class MealPlanView(APIView):
+    """This view provides the logic to GET meal plans"""
     parser_classes = (JSONParser,)
 
     def get(self, request, year, week):
+        """GETs a meal plan defined by all recipes of a given week"""
         recipe = models.MealPlan.objects.filter(user=request.user, year=year, week=week)
         serializer = MealPlanSerializer(recipe, many=True)
         return Response(serializer.data)
 
 class MealPlanPutView(APIView):
+    """This view provides the logic to PUT meal plans
+    If no meal plan is yet present in the database a new one will be created
+    before making the adjustments"""
     parser_classes = (JSONParser,)
 
     def put(self, request, year, week, day, meal_type):
+        """PUTs a new recipe for a given meal type (breakfast, lunch or dinner)"""
         user = request.user.id
 
         try:
-            mp = models.MealPlan.objects.get(user=user, year=year, week=week, day=day)
+            meal_plan = models.MealPlan.objects.get(user=user, year=year, week=week, day=day)
         except models.MealPlan.DoesNotExist:
-            mp = None
+            meal_plan = None
 
-        if mp is None:
+        if meal_plan is None:
             data = {'user':user, 'year':year,'week':week,'day':day}
             serializer = MealPlanSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
-                mp = serializer.instance
+                meal_plan = serializer.instance
             else:
                 return Response(serializer.error, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         try:
@@ -152,9 +152,9 @@ class MealPlanPutView(APIView):
             return JsonResponse({'detail': 'Recipe does not exist'}, status=400)
 
         if recipe is not None:
-            serializer = MealPlanSerializer(mp, data={"id":recipe.id}, partial=True)
+            serializer = MealPlanSerializer(meal_plan, data={"id":recipe.id}, partial=True)
         else:
-            serializer = MealPlanSerializer(mp, data={"id": -1}, partial=True)
+            serializer = MealPlanSerializer(meal_plan, data={"id": -1}, partial=True)
         if serializer.is_valid():
             if meal_type == "breakfast":
                 serializer.save(breakfast=recipe)
@@ -163,8 +163,7 @@ class MealPlanPutView(APIView):
             elif meal_type == "dinner":
                 serializer.save(dinner=recipe)
             else:
-                Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-

@@ -1,12 +1,15 @@
+"""This module defines all serializers used to transform model data"""
+from rest_framework.serializers import ModelSerializer
 from .models import MealPlan, Recipe, Ingredient
-from rest_framework.serializers import (ModelSerializer, HiddenField, CurrentUserDefault)
 
 class IngredientSerializer(ModelSerializer):
+    """Serializes ingredients"""
     class Meta:
         model = Ingredient
         fields = '__all__'
 
 class RecipeSerializer(ModelSerializer):
+    """Serializes recipes"""
     ingredients = IngredientSerializer(many=True, required=False)
 
     class Meta:
@@ -14,6 +17,7 @@ class RecipeSerializer(ModelSerializer):
         fields = '__all__'
 
 class MealPlanSerializer(ModelSerializer):
+    """Serializes meal plans"""
     breakfast = RecipeSerializer(many=False, required=False, allow_null=True)
     lunch = RecipeSerializer(many=False, required=False, allow_null=True)
     dinner = RecipeSerializer(many=False, required=False, allow_null=True)
