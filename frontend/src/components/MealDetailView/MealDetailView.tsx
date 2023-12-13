@@ -29,7 +29,7 @@ export const MealDetailView: React.FC = () => {
   };
 
   return (
-    <Container size={ContainerSize.Small}>
+    <Container size={ContainerSize.Big}>
       <Spacer size={Spacing.m} />
       <p
         onClick={handleClick}

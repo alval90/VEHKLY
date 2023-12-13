@@ -10,11 +10,14 @@ import { postRecipe } from "../../api/RecipeApi.ts";
 import { Spacing } from "../Spacer/Spacing.ts";
 import { ContainerSize } from "../Container/ContainerSize.tsx";
 import { Ingredient } from "../../utils/Meals.ts";
+import { HttpStatusCode } from "../../api/HttpStatusCodes.ts";
 
 export const NewMeal: React.FC = () => {
   const [recipeImage, setRecipeImage] = useState<File>();
   const [preview, setPreview] = useState<string>();
   const [title, setTitle] = useState<string>("");
+  const [titleError, setTitleError] = useState(false);
+  const [titleHelperText, setTitleHelperText] = useState("");
   const [recipeDescription, setRecipeDescription] = useState<string>("");
   const [ingredients, setIngredients] = useState<Ingredient[]>([
     {
@@ -52,14 +55,28 @@ export const NewMeal: React.FC = () => {
       formData.append("ingredients", JSON.stringify(ingredient));
     }
     postRecipe(formData)
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status == HttpStatusCode.OK) {
+          return res.json();
+        } else {
+          throw Error("Recipe title already in use");
+        }
+      })
       .then(() => {
         navigate(-1);
+      })
+      .catch((err) => {
+        setTitleError(true);
+        setTitleHelperText(err.message);
       });
   };
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
+    if (titleError) {
+      setTitleError(false);
+      setTitleHelperText("");
+    }
     setTitle(e.target.value);
   };
 
@@ -192,6 +209,8 @@ export const NewMeal: React.FC = () => {
                 label="Title"
                 onChange={handleTitleChange}
                 value={title}
+                error={titleError}
+                helperText={titleHelperText}
                 variant="filled"
               />
             </div>

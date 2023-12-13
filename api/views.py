@@ -93,6 +93,10 @@ class RecipeView(APIView):
         """POSTs a new recipe"""
         mut_data = request.data.copy()
 
+        recipe = models.Recipe.objects.filter(user=request.user, title=mut_data['title'])
+        if recipe.exists():
+            return JsonResponse({'detail': 'Title already in use'}, status=406)
+
         recipe_instance = None
         ingredients = mut_data.pop('ingredients')
 
