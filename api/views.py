@@ -8,7 +8,7 @@ from django.views.decorators.http import require_POST
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 from api import models
 from .serializers import RecipeSerializer, MealPlanSerializer
 
@@ -66,6 +66,7 @@ def register_view(request):
 class RecipeViewDetailed(APIView):
     """This view provides the functionality to GET and DELETE recipes"""
     parser_classes = (MultiPartParser,)
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, title):
         """GETs a single recipe"""
@@ -82,6 +83,7 @@ class RecipeViewDetailed(APIView):
 class RecipeView(APIView):
     """This view provides the logic to GET all recipes of a given user and POST a new recipe"""
     parser_classes = (MultiPartParser,)
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
         """GETs all recipes of a given user"""
@@ -117,6 +119,7 @@ class RecipeView(APIView):
 class MealPlanView(APIView):
     """This view provides the logic to GET meal plans"""
     parser_classes = (JSONParser,)
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, year, week):
         """GETs a meal plan defined by all recipes of a given week"""
@@ -129,6 +132,7 @@ class MealPlanPutView(APIView):
     If no meal plan is yet present in the database a new one will be created
     before making the adjustments"""
     parser_classes = (JSONParser,)
+    permission_classes = [permissions.IsAuthenticated]
 
     def put(self, request, year, week, day, meal_type):
         """PUTs a new recipe for a given meal type (breakfast, lunch or dinner)"""
