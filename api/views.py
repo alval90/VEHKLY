@@ -22,12 +22,12 @@ def login_view(request):
     password = data.get('password')
 
     if username is None or password is None:
-        return JsonResponse({'detail': 'No user name or password provided.'}, status=400)
+        return JsonResponse({'detail': 'No user name or password provided.'}, status=401)
 
     user = authenticate(username=username, password=password)
 
     if user is None:
-        return JsonResponse({'detail': 'Invalid credentials.'}, status=400)
+        return JsonResponse({'detail': 'Invalid credentials.'}, status=401)
 
     login(request, user)
     return JsonResponse({'detail': 'Successfully logged in.'})
@@ -142,7 +142,7 @@ class MealPlanPutView(APIView):
                 serializer.save()
                 meal_plan = serializer.instance
             else:
-                return Response(serializer.error, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
         try:
             if request.data["title"] is not None:
                 recipe = models.Recipe.objects.get(user=user, title=request.data["title"])
