@@ -1,69 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
-import { Container, ContainerSize } from "../Container/Container";
-import { Spacer, Spacing } from "../Spacer/Spacer";
+import { Container } from "../Container/Container";
+import { Spacer } from "../Spacer/Spacer";
+import { Spacing } from "../Spacer/Spacing.ts";
 import { Pagination } from "@mui/material";
 import { MediaCard } from "../MediaCard/MediaCard";
 import { ActionCard } from "../ActionCard/ActionCard";
 import YearMenu from "../Menu/YearMenu";
 import Button from "@mui/material/Button";
 import { getMealPlan, putMealPlan } from "../../api/MealPlan.ts";
+import { MealDay, MealType } from "../../utils/Meals.ts";
+import { logout } from "../../api/UserApi.ts";
+import { ContainerSize } from "../Container/ContainerSize.tsx";
+import { MealPlanInterface } from "../../utils/Meals.ts";
 
-export enum MealDay {
-  Monday = "monday",
-  Tuesday = "tuesday",
-  Wednesday = "wednesday",
-  Thursday = "thursday",
-  Friday = "friday",
-}
-
-export enum MealType {
-  breakfast = "breakfast",
-  lunch = "lunch",
-  dinner = "dinner",
-}
-const initBreakfast = [
-  <ActionCard
-    label={"+ Add meal"}
-    href={"addMeal?type=breakfast&day=monday"}
-  />,
-  <ActionCard
-    label={"+ Add meal"}
-    href={"addMeal?type=breakfast&day=tuesday"}
-  />,
-  <ActionCard
-    label={"+ Add meal"}
-    href={"addMeal?type=breakfast&day=wednesday"}
-  />,
-  <ActionCard
-    label={"+ Add meal"}
-    href={"addMeal?type=breakfast&day=thursday"}
-  />,
-  <ActionCard
-    label={"+ Add meal"}
-    href={"addMeal?type=breakfast&day=friday"}
-  />,
-];
-const initLunch = [
-  <ActionCard label={"+ Add meal"} href={"addMeal?type=lunch&day=monday"} />,
-  <ActionCard label={"+ Add meal"} href={"addMeal?type=lunch&day=tuesday"} />,
-  <ActionCard label={"+ Add meal"} href={"addMeal?type=lunch&day=wednesday"} />,
-  <ActionCard label={"+ Add meal"} href={"addMeal?type=lunch&day=thursday"} />,
-  <ActionCard label={"+ Add meal"} href={"addMeal?type=lunch&day=friday"} />,
-];
-const initDinner = [
-  <ActionCard label={"+ Add meal"} href={"addMeal?type=dinner&day=monday"} />,
-  <ActionCard label={"+ Add meal"} href={"addMeal?type=dinner&day=tuesday"} />,
-  <ActionCard
-    label={"+ Add meal"}
-    href={"addMeal?type=dinner&day=wednesday"}
-  />,
-  <ActionCard label={"+ Add meal"} href={"addMeal?type=dinner&day=thursday"} />,
-  <ActionCard label={"+ Add meal"} href={"addMeal?type=dinner&day=friday"} />,
-];
-
-export const getMealIndex = (mealDay: MealDay): number => {
+const getMealIndex = (mealDay: MealDay): number => {
   switch (mealDay) {
     case MealDay.Monday:
       return 0;
@@ -80,7 +31,7 @@ export const getMealIndex = (mealDay: MealDay): number => {
   }
 };
 
-export const getMealDay = (day: string): MealDay => {
+const getMealDay = (day: string): MealDay => {
   switch (day) {
     case "monday":
       return MealDay.Monday;
@@ -97,17 +48,7 @@ export const getMealDay = (day: string): MealDay => {
   }
 };
 
-const getActionCard = (mealDay: MealDay, mealType: MealType): JSX.Element => {
-  return (
-    <ActionCard
-      label={"+ Add meal"}
-      href={`addMeal?type=${mealType}&day=${mealDay}`}
-    />
-  );
-};
-
 export const MealPlan: React.FC = () => {
-  const { user, logout } = useAuth();
   const { year, week } = useParams();
   const navigate = useNavigate();
 
@@ -162,172 +103,186 @@ export const MealPlan: React.FC = () => {
     />,
     <ActionCard label={"+ Add meal"} href={"addMeal?type=dinner&day=friday"} />,
   ]);
+
+  const initMeals = useCallback(
+    (mealPlan: MealPlanInterface[]) => {
+      const removeMeal = (mealDay: MealDay, mealType: MealType) => {
+        switch (mealType) {
+          case MealType.breakfast:
+            if (year && week) {
+              putMealPlan(
+                year,
+                week,
+                mealDay.toString(),
+                mealType.toString(),
+                null,
+              )
+                .then((res) => res.json())
+                .then(() => {
+                  getMealPlan(year, week)
+                    .then((res) => res.json())
+                    .then(initMeals);
+                });
+            }
+            break;
+          case MealType.lunch:
+            if (year && week) {
+              putMealPlan(
+                year,
+                week,
+                mealDay.toString(),
+                mealType.toString(),
+                null,
+              )
+                .then((res) => res.json())
+                .then(() => {
+                  getMealPlan(year, week)
+                    .then((res) => res.json())
+                    .then(initMeals);
+                });
+            }
+            break;
+          case MealType.dinner:
+            if (year && week) {
+              putMealPlan(
+                year,
+                week,
+                mealDay.toString(),
+                mealType.toString(),
+                null,
+              )
+                .then((res) => res.json())
+                .then(() => {
+                  getMealPlan(year, week)
+                    .then((res) => res.json())
+                    .then(initMeals);
+                });
+            }
+            break;
+        }
+      };
+
+      const initBreakfast = [
+        <ActionCard
+          label={"+ Add meal"}
+          href={"addMeal?type=breakfast&day=monday"}
+        />,
+        <ActionCard
+          label={"+ Add meal"}
+          href={"addMeal?type=breakfast&day=tuesday"}
+        />,
+        <ActionCard
+          label={"+ Add meal"}
+          href={"addMeal?type=breakfast&day=wednesday"}
+        />,
+        <ActionCard
+          label={"+ Add meal"}
+          href={"addMeal?type=breakfast&day=thursday"}
+        />,
+        <ActionCard
+          label={"+ Add meal"}
+          href={"addMeal?type=breakfast&day=friday"}
+        />,
+      ];
+      const initLunch = [
+        <ActionCard
+          label={"+ Add meal"}
+          href={"addMeal?type=lunch&day=monday"}
+        />,
+        <ActionCard
+          label={"+ Add meal"}
+          href={"addMeal?type=lunch&day=tuesday"}
+        />,
+        <ActionCard
+          label={"+ Add meal"}
+          href={"addMeal?type=lunch&day=wednesday"}
+        />,
+        <ActionCard
+          label={"+ Add meal"}
+          href={"addMeal?type=lunch&day=thursday"}
+        />,
+        <ActionCard
+          label={"+ Add meal"}
+          href={"addMeal?type=lunch&day=friday"}
+        />,
+      ];
+      const initDinner = [
+        <ActionCard
+          label={"+ Add meal"}
+          href={"addMeal?type=dinner&day=monday"}
+        />,
+        <ActionCard
+          label={"+ Add meal"}
+          href={"addMeal?type=dinner&day=tuesday"}
+        />,
+        <ActionCard
+          label={"+ Add meal"}
+          href={"addMeal?type=dinner&day=wednesday"}
+        />,
+        <ActionCard
+          label={"+ Add meal"}
+          href={"addMeal?type=dinner&day=thursday"}
+        />,
+        <ActionCard
+          label={"+ Add meal"}
+          href={"addMeal?type=dinner&day=friday"}
+        />,
+      ];
+
+      for (const meal of mealPlan) {
+        const mealDay: MealDay = getMealDay(meal.day);
+        const mealIndex = getMealIndex(mealDay);
+        const { breakfast, lunch, dinner } = meal;
+        if (breakfast !== null) {
+          const { imagePath, title } = breakfast;
+          initBreakfast[mealIndex] = (
+            <MediaCard
+              imagePath={imagePath}
+              imageTitle={title}
+              clickEvent={() => removeMeal(mealDay, MealType.breakfast)}
+            />
+          );
+        }
+        if (lunch !== null) {
+          const { imagePath, title } = lunch;
+          initLunch[mealIndex] = (
+            <MediaCard
+              imagePath={imagePath}
+              imageTitle={title}
+              clickEvent={() => removeMeal(mealDay, MealType.lunch)}
+            />
+          );
+        }
+        if (dinner !== null) {
+          const { imagePath, title } = dinner;
+          initDinner[mealIndex] = (
+            <MediaCard
+              imagePath={imagePath}
+              imageTitle={title}
+              clickEvent={() => removeMeal(mealDay, MealType.dinner)}
+            />
+          );
+        }
+      }
+      setBreakfast(initBreakfast);
+      setLunch(initLunch);
+      setDinner(initDinner);
+    },
+    [week, year],
+  );
+
   useEffect(() => {
     if (!year || !week) {
       return;
     } else {
-      console.log("here???");
       getMealPlan(year, week)
         .then((res) => res.json())
         .then(initMeals);
     }
-  }, [year, week]);
+  }, [year, week, initMeals]);
 
-  const initMeals = (mealPlan) => {
-    const initBreakfast = [
-      <ActionCard
-        label={"+ Add meal"}
-        href={"addMeal?type=breakfast&day=monday"}
-      />,
-      <ActionCard
-        label={"+ Add meal"}
-        href={"addMeal?type=breakfast&day=tuesday"}
-      />,
-      <ActionCard
-        label={"+ Add meal"}
-        href={"addMeal?type=breakfast&day=wednesday"}
-      />,
-      <ActionCard
-        label={"+ Add meal"}
-        href={"addMeal?type=breakfast&day=thursday"}
-      />,
-      <ActionCard
-        label={"+ Add meal"}
-        href={"addMeal?type=breakfast&day=friday"}
-      />,
-    ];
-    const initLunch = [
-      <ActionCard
-        label={"+ Add meal"}
-        href={"addMeal?type=lunch&day=monday"}
-      />,
-      <ActionCard
-        label={"+ Add meal"}
-        href={"addMeal?type=lunch&day=tuesday"}
-      />,
-      <ActionCard
-        label={"+ Add meal"}
-        href={"addMeal?type=lunch&day=wednesday"}
-      />,
-      <ActionCard
-        label={"+ Add meal"}
-        href={"addMeal?type=lunch&day=thursday"}
-      />,
-      <ActionCard
-        label={"+ Add meal"}
-        href={"addMeal?type=lunch&day=friday"}
-      />,
-    ];
-    const initDinner = [
-      <ActionCard
-        label={"+ Add meal"}
-        href={"addMeal?type=dinner&day=monday"}
-      />,
-      <ActionCard
-        label={"+ Add meal"}
-        href={"addMeal?type=dinner&day=tuesday"}
-      />,
-      <ActionCard
-        label={"+ Add meal"}
-        href={"addMeal?type=dinner&day=wednesday"}
-      />,
-      <ActionCard
-        label={"+ Add meal"}
-        href={"addMeal?type=dinner&day=thursday"}
-      />,
-      <ActionCard
-        label={"+ Add meal"}
-        href={"addMeal?type=dinner&day=friday"}
-      />,
-    ];
-
-    for (const meal of mealPlan) {
-      const mealDay: MealDay = getMealDay(meal.day);
-      const mealIndex = getMealIndex(mealDay);
-      const { breakfast, lunch, dinner } = meal;
-      if (breakfast !== null) {
-        const { imagePath, title } = breakfast;
-        initBreakfast[mealIndex] = (
-          <MediaCard
-            imagePath={imagePath}
-            imageTitle={title}
-            clickEvent={() =>
-              removeMeal(mealDay, MealType.breakfast, mealIndex)
-            }
-          />
-        );
-      }
-      if (lunch !== null) {
-        const { imagePath, title } = lunch;
-        initLunch[mealIndex] = (
-          <MediaCard
-            imagePath={imagePath}
-            imageTitle={title}
-            clickEvent={() => removeMeal(mealDay, MealType.lunch, mealIndex)}
-          />
-        );
-      }
-      if (dinner !== null) {
-        const { imagePath, title } = dinner;
-        initDinner[mealIndex] = (
-          <MediaCard
-            imagePath={imagePath}
-            imageTitle={title}
-            clickEvent={() => removeMeal(mealDay, MealType.dinner, mealIndex)}
-          />
-        );
-      }
-    }
-    console.log(initBreakfast);
-    setBreakfast(initBreakfast);
-    setLunch(initLunch);
-    setDinner(initDinner);
-  };
-
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     navigate(`/mealplan/${year}/${value}`);
-  };
-
-  const removeMeal = (
-    mealDay: MealDay,
-    mealType: MealType,
-    mealIndex: number,
-  ) => {
-    switch (mealType) {
-      case MealType.breakfast:
-        if (year && week) {
-          putMealPlan(year, week, mealDay.toString(), mealType.toString(), null)
-            .then((res) => res.json())
-            .then(() => {
-              getMealPlan(year, week)
-                .then((res) => res.json())
-                .then(initMeals);
-            });
-        }
-        break;
-      case MealType.lunch:
-        if (year && week) {
-          putMealPlan(year, week, mealDay.toString(), mealType.toString(), null)
-            .then((res) => res.json())
-            .then(() => {
-              getMealPlan(year, week)
-                .then((res) => res.json())
-                .then(initMeals);
-            });
-        }
-        break;
-      case MealType.dinner:
-        if (year && week) {
-          putMealPlan(year, week, mealDay.toString(), mealType.toString(), null)
-            .then((res) => res.json())
-            .then(() => {
-              getMealPlan(year, week)
-                .then((res) => res.json())
-                .then(initMeals);
-            });
-        }
-        break;
-    }
   };
 
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];

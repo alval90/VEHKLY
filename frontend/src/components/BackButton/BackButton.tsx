@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-export let BackButton: React.FC<{}> = () => {
-  let navigate = useNavigate();
-  const handleClick = (e: any) => {
+export const BackButton: React.FC = () => {
+  const navigate = useNavigate();
+  const handleClick = () => {
     navigate(-1);
   };
 

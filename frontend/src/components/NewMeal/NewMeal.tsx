@@ -1,15 +1,17 @@
-import React, { ChangeEvent, useRef, useState } from "react";
+import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, ContainerSize } from "../Container/Container";
-import { Spacer, Spacing } from "../Spacer/Spacer";
+import { Container } from "../Container/Container";
+import { Spacer } from "../Spacer/Spacer";
 import "./NewMeal.css";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
-import { Ingredient } from "../AddMeal/AddMeal";
 import { BackButton } from "../BackButton/BackButton";
 import { postRecipe } from "../../api/RecipeApi.ts";
+import { Spacing } from "../Spacer/Spacing.ts";
+import { ContainerSize } from "../Container/ContainerSize.tsx";
+import { Ingredient } from "../../utils/Meals.ts";
 
-export const NewMeal: React.FC<{}> = () => {
+export const NewMeal: React.FC = () => {
   const [recipeImage, setRecipeImage] = useState<File>();
   const [preview, setPreview] = useState<string>();
   const [title, setTitle] = useState<string>("");
@@ -37,7 +39,7 @@ export const NewMeal: React.FC<{}> = () => {
     }
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -51,34 +53,42 @@ export const NewMeal: React.FC<{}> = () => {
     }
     postRecipe(formData)
       .then((res) => res.json())
-      .then((data) => {
+      .then(() => {
         navigate(-1);
       });
   };
 
-  const handleTitleChange = (e: any) => {
+  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setTitle(e.target.value);
   };
 
-  const handleRecipeDescriptionChange = (e: any) => {
+  const handleRecipeDescriptionChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     e.preventDefault();
     setRecipeDescription(e.target.value);
   };
 
-  const handleIngredientTitleChange = (e: any, index: number) => {
-    let ingredientsUpdated = [...ingredients];
+  const handleIngredientTitleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    index: number,
+  ) => {
+    const ingredientsUpdated = [...ingredients];
     ingredientsUpdated[index].title = e.target.value;
     setIngredients(ingredientsUpdated);
   };
 
-  const handleIngredientAmountChange = (e: any, index: number) => {
-    let ingredientsUpdated = [...ingredients];
+  const handleIngredientAmountChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    index: number,
+  ) => {
+    const ingredientsUpdated = [...ingredients];
     ingredientsUpdated[index].amount = e.target.value;
     setIngredients(ingredientsUpdated);
   };
 
-  let ingredientInput = ingredients.map((ingredient, index) => (
+  const ingredientInput = ingredients.map((ingredient, index) => (
     <div>
       <Spacer size={Spacing.s} />
       <div
@@ -123,13 +133,13 @@ export const NewMeal: React.FC<{}> = () => {
   ));
 
   const handleRemoveIngredientClick = (index: number) => {
-    let ingredientsUpdated = [...ingredients];
+    const ingredientsUpdated = [...ingredients];
     ingredientsUpdated.splice(index, 1);
     setIngredients(ingredientsUpdated);
   };
 
-  const handleIngredientClick = (e: any) => {
-    let ingredientsUpdated = [...ingredients];
+  const handleIngredientClick = () => {
+    const ingredientsUpdated = [...ingredients];
     ingredientsUpdated.push({ title: "", amount: "" });
     setIngredients(ingredientsUpdated);
   };

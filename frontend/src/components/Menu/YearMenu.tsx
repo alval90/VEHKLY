@@ -1,5 +1,4 @@
 import * as React from "react";
-import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useNavigate, useParams } from "react-router-dom";
@@ -7,11 +6,11 @@ import { useNavigate, useParams } from "react-router-dom";
 const ITEM_HEIGHT = 48;
 
 const getYearRange = (): number[] => {
-  let yearRange: number[] = [];
+  const yearRange: number[] = [];
 
-  let currentYear: number = new Date().getFullYear();
-  let from: number = currentYear - 2;
-  let to: number = currentYear + 2;
+  const currentYear: number = new Date().getFullYear();
+  const from: number = currentYear - 2;
+  const to: number = currentYear + 2;
   for (let i = from; i <= to; i++) {
     yearRange.push(i);
   }
@@ -22,12 +21,12 @@ const getYearRange = (): number[] => {
 export default function YearMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const { year, week } = useParams();
+  const { year } = useParams();
   const navigate = useNavigate();
 
   const options = getYearRange();
 
-  let yearParsed: number = year ? parseInt(year) : new Date().getFullYear();
+  const yearParsed: number = year ? parseInt(year) : new Date().getFullYear();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -35,8 +34,14 @@ export default function YearMenu() {
     setAnchorEl(null);
   };
 
-  const handleYearClick = (e: any, year: number) => {
-    if (e.target.selected) {
+  const handleYearClick = (
+    e: React.MouseEvent<HTMLLIElement>,
+    year: number,
+  ) => {
+    const target = e.target as EventTarget & {
+      selected: boolean | undefined;
+    };
+    if (target?.selected) {
       return;
     }
     navigate(`/mealplan/${year}/1`);

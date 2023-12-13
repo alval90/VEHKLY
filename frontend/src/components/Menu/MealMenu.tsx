@@ -6,9 +6,9 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 interface MealMenuProps {
   viewClickEvent: () => void;
-  deleteClickEvents: () => {};
+  deleteClickEvents: () => NonNullable<unknown>;
 }
-export let MealMenu: React.FC<MealMenuProps> = ({
+export const MealMenu: React.FC<MealMenuProps> = ({
   viewClickEvent,
   deleteClickEvents,
 }) => {

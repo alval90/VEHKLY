@@ -1,10 +1,7 @@
 import React, { ReactNode } from "react";
 import "./Container.css";
+import { ContainerSize } from "./ContainerSize.tsx";
 
-export enum ContainerSize {
-  Small = "410px",
-  Big = "1050px",
-}
 interface ContainerProps {
   children: ReactNode;
   size: ContainerSize;

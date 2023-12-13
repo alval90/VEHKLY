@@ -1,7 +1,8 @@
 import Cookies from "universal-cookie";
 
+const cookies = new Cookies();
+
 export const getRecipes = async (): Promise<globalThis.Response> => {
-  const cookies = new Cookies();
   return await fetch("/api/recipe/", {
     method: "GET",
     headers: {
@@ -17,7 +18,6 @@ export const getRecipes = async (): Promise<globalThis.Response> => {
 export const getRecipe = async (
   recipeName: string,
 ): Promise<globalThis.Response> => {
-  const cookies = new Cookies();
   return await fetch(`/api/recipe/${recipeName}`, {
     method: "GET",
     headers: {
@@ -33,7 +33,6 @@ export const getRecipe = async (
 export const deleteRecipe = async (
   recipeName: string,
 ): Promise<globalThis.Response> => {
-  const cookies = new Cookies();
   return await fetch(`/api/recipe/${recipeName}`, {
     method: "DELETE",
     headers: {

@@ -1,5 +1,5 @@
 import "./App.css";
-import background from "../../images/background.jpg";
+import background from "../../assets/background.jpg";
 import { Outlet } from "react-router-dom";
 
 function App() {

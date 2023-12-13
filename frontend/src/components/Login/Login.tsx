@@ -1,13 +1,16 @@
-import React, { useState } from "react";
-import { Container, ContainerSize } from "../Container/Container";
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import { Container } from "../Container/Container";
 import Button from "@mui/material/Button";
-import { Spacer, Spacing } from "../Spacer/Spacer";
+import { Spacer } from "../Spacer/Spacer";
+import { Spacing } from "../Spacer/Spacing.ts";
 import { Link, useNavigate } from "react-router-dom";
 import { TextField } from "@mui/material";
 import { getCurrentWeekMealPlanURL } from "../../utils/dateUtils";
-import { HttpStatusCode, useAuth } from "../../contexts/AuthContext";
+import { HttpStatusCode } from "../../api/HttpStatusCodes.ts";
+import { login } from "../../api/UserApi.ts";
+import { ContainerSize } from "../Container/ContainerSize.tsx";
 
-export const Login: React.FC<{}> = () => {
+export const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [password, setPassword] = useState("");
@@ -15,14 +18,12 @@ export const Login: React.FC<{}> = () => {
   const [helperText, setHelperText] = useState("");
 
   const navigate = useNavigate();
-  const authContext = useAuth();
 
-  const handleSubmit = async (e: Event) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (email && password) {
-      await authContext
-        .login({ username: email, password: password })
+      await login({ username: email, password: password })
         .then((res) => {
           if (res.status == HttpStatusCode.OK) {
             navigate(getCurrentWeekMealPlanURL());
@@ -38,7 +39,7 @@ export const Login: React.FC<{}> = () => {
     }
   };
 
-  const handleEmailChange = (e: any) => {
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     if (emailError) {
       setHelperText("");
@@ -47,7 +48,7 @@ export const Login: React.FC<{}> = () => {
     setEmail(e.target.value);
   };
 
-  const handlePasswordChange = (e: any) => {
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     if (passwordError) {
       setHelperText("");

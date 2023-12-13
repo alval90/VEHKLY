@@ -1,33 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { Container, ContainerSize } from "../Container/Container";
-import { HttpStatusCode, useAuth } from "../../contexts/AuthContext";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Spacer, Spacing } from "../Spacer/Spacer";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { Container } from "../Container/Container";
+import { useNavigate, useParams } from "react-router-dom";
+import { Spacer } from "../Spacer/Spacer";
+import { Spacing } from "../Spacer/Spacing.ts";
 import { ActionCard } from "../ActionCard/ActionCard";
 import { MediaCard } from "../MediaCard/MediaCard";
 import { TextField } from "@mui/material";
 import { useQuery } from "../../utils/hooks";
 import { BackButton } from "../BackButton/BackButton";
-
-import mockMeals from "./MockData/meals.json";
 import { deleteRecipe, getRecipes } from "../../api/RecipeApi.ts";
-import { getCurrentWeekMealPlanURL } from "../../utils/dateUtils.ts";
 import { putMealPlan } from "../../api/MealPlan.ts";
+import { HttpStatusCode } from "../../api/HttpStatusCodes.ts";
+import { ContainerSize } from "../Container/ContainerSize.tsx";
+import { Meal } from "../../utils/Meals.ts";
 
-export interface Meal {
-  title: string;
-  description: string | null;
-  imagePath: string | null;
-  ingredients: Ingredient[];
-}
-
-export interface Ingredient {
-  title: string;
-  amount: string;
-}
-
-export const AddMeal: React.FC<{}> = () => {
-  let [meals, setMeals] = useState<Meal[]>();
+export const AddMeal: React.FC = () => {
+  const [meals, setMeals] = useState<Meal[]>();
   const [searchInput, setSearchInput] = useState("");
 
   const { year, week } = useParams();
@@ -39,7 +27,7 @@ export const AddMeal: React.FC<{}> = () => {
       .then(setMeals);
   }, []);
 
-  const handleSearchChange = (e: any) => {
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setSearchInput(e.target.value);
   };
@@ -47,11 +35,10 @@ export const AddMeal: React.FC<{}> = () => {
   const addMeal = (mealTitle: string) => {
     const day = query.get("day");
     const type = query.get("type");
-    console.log(`${year}, ${week}, ${day}, ${type}`);
     if (year && week && day && type) {
       putMealPlan(year, week, day, type, mealTitle)
         .then((res) => res.json())
-        .then((data) => {
+        .then(() => {
           navigate(-1);
         });
     }
@@ -66,7 +53,7 @@ export const AddMeal: React.FC<{}> = () => {
           );
           setMeals(updatedMeals);
         } else {
-          throw Error("Unable to delte recipe");
+          throw Error("Unable to delete recipe");
         }
       })
       .catch((err) => {

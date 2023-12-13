@@ -1,11 +1,14 @@
-import React, { useState } from "react";
-import { Container, ContainerSize } from "../Container/Container";
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import { Container } from "../Container/Container";
 import Button from "@mui/material/Button";
-import { Spacer, Spacing } from "../Spacer/Spacer";
+import { Spacer } from "../Spacer/Spacer";
+import { Spacing } from "../Spacer/Spacing.ts";
 import { TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { getCurrentWeekMealPlanURL } from "../../utils/dateUtils";
-import { HttpStatusCode, useAuth } from "../../contexts/AuthContext.tsx";
+import { HttpStatusCode } from "../../api/HttpStatusCodes.ts";
+import { register } from "../../api/UserApi.ts";
+import { ContainerSize } from "../Container/ContainerSize.tsx";
 
 export const Register: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -16,10 +19,9 @@ export const Register: React.FC = () => {
   const [passwordHelperText, setPasswordHelperText] = useState("");
   const [repPassword, setRepPassword] = useState("");
 
-  const authContext = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: Event) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (password !== repPassword) {
@@ -28,8 +30,7 @@ export const Register: React.FC = () => {
       return;
     }
     if (email && password) {
-      await authContext
-        .register({ username: email, password: password })
+      await register({ username: email, password: password })
         .then(async (res) => {
           if (res.status == HttpStatusCode.OK) {
             navigate(getCurrentWeekMealPlanURL());
@@ -44,7 +45,7 @@ export const Register: React.FC = () => {
     }
   };
 
-  const handleEmailChange = (e: any) => {
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     if (emailError) {
       setEmailError(false);
@@ -53,7 +54,7 @@ export const Register: React.FC = () => {
     setEmail(e.target.value);
   };
 
-  const handlePasswordChange = (e: any) => {
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     if (passwordError) {
       setPasswordError(false);
@@ -62,7 +63,7 @@ export const Register: React.FC = () => {
     setPassword(e.target.value);
   };
 
-  const handleRepPasswordChange = (e: any) => {
+  const handleRepPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     if (passwordError) {
       setPasswordError(false);

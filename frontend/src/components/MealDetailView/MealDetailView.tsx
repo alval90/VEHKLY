@@ -1,28 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { Container, ContainerSize } from "../Container/Container";
+import { Container } from "../Container/Container";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "../../utils/hooks";
-import { Ingredient, Meal } from "../AddMeal/AddMeal";
-import { Spacer, Spacing } from "../Spacer/Spacer";
-import defaultImage from "../../images/defaultImage.jpg";
+import { Spacer } from "../Spacer/Spacer";
+import { Spacing } from "../Spacer/Spacing.ts";
+import defaultImage from "../../assets/defaultImage.jpg";
 
 import { getRecipe } from "../../api/RecipeApi.ts";
+import { ContainerSize } from "../Container/ContainerSize.tsx";
+import { Meal, Ingredient } from "../../utils/Meals.ts";
 
-export const MealDetailView = () => {
+export const MealDetailView: React.FC = () => {
   const [meal, setMeal] = useState<Meal>();
 
   const navigate = useNavigate();
   const query = useQuery();
+  const mealTitle = query.get("meal");
   useEffect(() => {
-    const mealTitle = query.get("meal");
     if (mealTitle) {
       getRecipe(mealTitle)
         .then((res) => res.json())
         .then(setMeal);
     }
-  }, []);
+  }, [mealTitle]);
 
-  const handleClick = (e: any) => {
+  const handleClick = () => {
     navigate(-1);
   };
 
@@ -51,7 +53,7 @@ export interface MealViewProp {
   meal: Meal;
 }
 export const MealView: React.FC<MealViewProp> = ({ meal }) => {
-  let ingredients = meal.ingredients.map((ingredient: Ingredient) => (
+  const ingredients = meal.ingredients.map((ingredient: Ingredient) => (
     <li>
       {ingredient.title}: {ingredient.amount}
     </li>
@@ -70,6 +72,7 @@ export const MealView: React.FC<MealViewProp> = ({ meal }) => {
       <img
         style={{ height: "140px", width: "140px", borderRadius: "12px" }}
         src={meal.imagePath ? meal.imagePath : defaultImage}
+        alt={`Image of ${meal.title}`}
       />
       <Spacer size={Spacing.xs} />
       <h1>{meal.title}</h1>

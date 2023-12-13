@@ -1,43 +1,42 @@
 import React, { useEffect, useState } from "react";
-import { Container, ContainerSize } from "../Container/Container";
-import { useNavigate } from "react-router-dom";
+import { Container } from "../Container/Container";
 import { useQuery } from "../../utils/hooks";
-import { Spacer, Spacing } from "../Spacer/Spacer";
+import { Spacer } from "../Spacer/Spacer";
+import { Spacing } from "../Spacer/Spacing.ts";
 import { MealView } from "../MealDetailView/MealDetailView";
-import { Meal } from "../AddMeal/AddMeal";
 import { BackButton } from "../BackButton/BackButton";
 
-import weekReturnedMock from "./MockData/weekReturned.json";
 import { getMealPlan } from "../../api/MealPlan.ts";
+import { ContainerSize } from "../Container/ContainerSize.tsx";
+import { Meal, MealPlanInterface } from "../../utils/Meals.ts";
 
-export const MealList = () => {
-  let [mondayMeals, setMondayMeals] = useState<Meal[]>();
-  let [tuesdayMeals, setTuesdayMeals] = useState<Meal[]>();
-  let [wednesdayMeals, setWednesdayMeals] = useState<Meal[]>();
-  let [thursdayMeals, setThursdayMeals] = useState<Meal[]>();
-  let [fridayMeals, setFridayMeals] = useState<Meal[]>();
+export const MealList: React.FC = () => {
+  const [mondayMeals, setMondayMeals] = useState<Meal[]>();
+  const [tuesdayMeals, setTuesdayMeals] = useState<Meal[]>();
+  const [wednesdayMeals, setWednesdayMeals] = useState<Meal[]>();
+  const [thursdayMeals, setThursdayMeals] = useState<Meal[]>();
+  const [fridayMeals, setFridayMeals] = useState<Meal[]>();
 
-  let navigate = useNavigate();
-  let query = useQuery();
+  const query = useQuery();
+  const year = query.get("year");
+  const week = query.get("week");
   useEffect(() => {
-    let year = query.get("year");
-    let week = query.get("week");
     if (year && week) {
       getMealPlan(year, week)
         .then((res) => res.json())
         .then(initMealList);
     }
     window.scrollTo(0, 0);
-  }, []);
+  }, [year, week]);
 
-  const initMealList = (meals) => {
-    for (let meal of meals) {
-      let { breakfast, lunch, dinner } = meal;
+  const initMealList = (meals: MealPlanInterface[]) => {
+    for (const meal of meals) {
+      const { breakfast, lunch, dinner } = meal;
       if (!breakfast && !lunch && !dinner) {
         continue;
       }
-      let mealsUpdated = [breakfast, lunch, dinner].filter(
-        (meal) => meal !== null,
+      const mealsUpdated: Meal[] = [breakfast, lunch, dinner].flatMap((meal) =>
+        meal ? [meal] : [],
       );
       switch (meal.day.toLowerCase()) {
         case "monday":
@@ -59,11 +58,13 @@ export const MealList = () => {
     }
   };
 
-  let mondayList = mondayMeals?.map((meal) => <MealView meal={meal} />);
-  let tuesdayList = tuesdayMeals?.map((meal) => <MealView meal={meal} />);
-  let wednesdayList = wednesdayMeals?.map((meal) => <MealView meal={meal} />);
-  let thursdayList = thursdayMeals?.map((meal) => <MealView meal={meal} />);
-  let fridayList = fridayMeals?.map((meal) => <MealView meal={meal} />);
+  const mondayList = mondayMeals
+    ?.filter((meal) => meal !== null)
+    .map((meal) => <MealView meal={meal} />);
+  const tuesdayList = tuesdayMeals?.map((meal) => <MealView meal={meal} />);
+  const wednesdayList = wednesdayMeals?.map((meal) => <MealView meal={meal} />);
+  const thursdayList = thursdayMeals?.map((meal) => <MealView meal={meal} />);
+  const fridayList = fridayMeals?.map((meal) => <MealView meal={meal} />);
 
   return (
     <Container size={ContainerSize.Big}>
