@@ -30,4 +30,4 @@ Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in the browser.
 
 6. (optional) Create super user\
 `python manage.py createsuperuser`\
-Open [http://127.0.0.1:800ß/admin/](http://127.0.0.1:8000/admin/) to manage the database.
+Open [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) to manage the database.
