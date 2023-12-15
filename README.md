@@ -19,9 +19,9 @@ For the grading of the semester project, the final frontend build has already be
 
 ### Backend (Root)
 3. Set up virtual environment\
-`python -m venv env`\
-`. env/bin/activate`    # Using MacOS/Linux\
-`ènv\Scripts\activate`  # Using Windows
+`python -m venv venv`\
+`. venv/bin/activate`    # Using MacOS/Linux\
+`vènv\Scripts\activate`  # Using Windows
 4. Install dependencies\
 `pip install -r requirements.txt`
 5. Set up database\
