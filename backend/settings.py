@@ -122,7 +122,6 @@ STATICFILES_DIRS = (
 	BASE_DIR.joinpath('frontend', 'dist'),
 )
 
-# Dynamic files (Images)
 MEDIA_ROOT = BASE_DIR.joinpath('media')
 MEDIA_URL = '/media/'
 
