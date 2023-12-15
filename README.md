@@ -24,10 +24,10 @@ For the grading of the semester project, the final frontend build has already be
 `vènv\Scripts\activate`  # Using Windows
 4. Install dependencies\
 `pip install -r requirements.txt`
-6. Start application\
+5. Start application\
 `python manage.py runserver`\
 Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in the browser.
 
-7. (optional) Create super user\
+6. (optional) Create super user\
 `python manage.py createsuperuser`\
 Open [http://127.0.0.1:800ß/admin/](http://127.0.0.1:8000/admin/) to manage the database.
